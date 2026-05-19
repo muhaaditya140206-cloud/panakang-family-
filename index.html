@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Panakang Family</title>
+    
+    <link rel="icon" type="image/png" href="logo_dark.png">
+    
+    <style>
+        /* Desain Dasar Futuristik */
+        html {
+            scroll-behavior: smooth; /* Membuat efek scroll jadi halus */
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d1117; 
+            color: #f0f6fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Kanvas Efek Partikel */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Konten Utama */
+        .container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            animation: munculed 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo {
+            max-width: 85%;
+            width: 280px;
+            height: auto;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 0 15px rgba(230, 126, 34, 0.2));
+        }
+
+        /* Kotak Profil Bergaya Kaca (Glassmorphism) */
+        .card-profil {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: left;
+            border-left: 4px solid #e67e22;
+            margin-bottom: 30px;
+        }
+
+        .card-profil h3, .section-title {
+            margin: 0 0 15px 0;
+            font-size: 1.1em;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-item {
+            margin-bottom: 5px;
+        }
+
+        .info-label {
+            font-size: 0.85em;
+            color: #8b949e;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #f0f6fc;
+        }
+
+        /* Bagian Galeri Isi Web */
+        .galeri-section {
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            text-align: left;
+            padding-left: 5px;
+            color: #e67e22;
+        }
+
+        .grid-galeri {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .item-galeri {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .item-galeri:hover {
+            transform: translateY(-5px);
+            border-color: rgba(230, 126, 34, 0.3);
+        }
+
+        .item-galeri img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .caption-galeri {
+            padding: 15px;
+            font-size: 0.95em;
+            color: #ecf0f1;
+            background: rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+        /* Lightbox Pop-up Gambar */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 15, 23, 0.95);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .lightbox-img {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: zoomIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            color: #f0f6fc;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .lightbox-close:hover { color: #e67e22; }
+
+        /* Buku Tamu / Kolom Ucapan */
+        .guestbook-section {
+            width: 100%;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .form-guestbook input, .form-guestbook textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-family: inherit;
+            box-sizing: border-box;
+            font-size: 0.95em;
+        }
+
+        .form-guestbook input:focus, .form-guestbook textarea:focus {
+            outline: none;
+            border-color: #e67e22;
+        }
+
+        .btn-kirim {
+            width: 100%;
+            padding: 12px;
+            background: #e67e22;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-kirim:hover { background: #d35400; }
+
+        .daftar-ucapan {
+            margin-top: 25px;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .daftar-ucapan::-webkit-scrollbar { width: 5px; }
+        .daftar-ucapan::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+
+        .kotak-pesan {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            text-align: left;
+            border-left: 3px solid #e67e22;
+        }
+
+        .nama-pengirim { font-weight: bold; color: #e67e22; font-size: 0.95em; margin-bottom: 4px; display: block; }
+        .isi-pesan { font-size: 0.9em; color: #ecf0f1; }
+
+        /* Tombol WhatsApp */
+        .btn-wa {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e67e22;
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+
+        .btn-wa:hover { background-color: #d35400; transform: translateY(-2px); }
+
+        /* FITUR BARU: Tombol Back to Top */
+        #btn-back-to-top {
+            display: none; /* Sembunyi di awal, muncul saat di-scroll ke bawah */
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: #e67e22;
+            color: white;
+            cursor: pointer;
+            padding: 12px 16px;
+            border-radius: 50%;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        #btn-back-to-top:hover {
+            background-color: #d35400;
+            transform: scale(1.1);
+        }
+
+        /* Keyframes Animasi */
+        @keyframes munculed {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <div id="custom-lightbox" class="lightbox" onclick="tutupLightbox()">
+        <span class="lightbox-close" onclick="tutupLightbox()">&times;</span>
+        <img class="lightbox-img" id="img-lightbox" src="" alt="Zoomed Image">
+    </div>
+
+    <button onclick="keAtas()" id="btn-back-to-top" title="Kembali ke atas">↑</button>
+
+    <div class="container">
+        <img src="logo_dark.png" alt="The Panakang Family" class="logo">
+        
+        <div class="card-profil">
+            <h3>Project Info</h3>
+            <div class="info-item">
+                <span class="info-label">Pencipta Web</span>
+                <span class="info-value">Aditya</span>
+            </div>
+            <a href="https://wa.me/6282151939488?text=Halo%20Aditya,%20saya%20melihat%20website%20The%20Panakang%20Family%20kamu!" class="btn-wa" target="_blank">
+                Hubungi via WhatsApp
+            </a>
+        </div>
+
+        <div class="galeri-section">
+            <h3 class="section-title">Dokumentasi & Kegiatan</h3>
+            <div class="grid-galeri">
+                <div class="item-galeri" onclick="bukaLightbox('konten1.jpg')">
+                    <img src="konten1.jpg" alt="Isi Web 1">
+                    <div class="caption-galeri">
+                        <strong>Keluarga Besar</strong><br>
+                        <span style="font-size: 0.85em; color: #8b949e;">Momen kebersamaan yang tak terlupakan.</span>
+                    </div>
+                </div>
+                <div class="item-galeri" onclick="bukaLightbox('konten2.jpg')">
+                    <img src="konten2.jpg" alt="Isi Web 2">
+                    <div class="caption-galeri">
+                        <strong>Aktivitas & Acara</strong><br>
+                        <span style="font-size: 0.85em; color: #8b949e;">Agenda seru dari The Panakang Family.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="guestbook-section">
+            <h3 class="section-title" style="margin-bottom: 15px;">Buku Tamu Keluarga</h3>
+            <div class="form-guestbook">
+                <input type="text" id="input-nama" placeholder="Nama Anda" required>
+                <textarea id="input-pesan" rows="3" placeholder="Tulis ucapan atau pesan hangat Anda..." required></textarea>
+                <button class="btn-kirim" onclick="kirimUcapan()">Kirim Ucapan</button>
+            </div>
+            <div class="daftar-ucapan" id="box-ucapan"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- LOGIKA TOMBOL BACK TO TOP ---
+        const mybutton = document.getElementById("btn-back-to-top");
+
+        // Ketika user men-scroll ke bawah semisal 300px dari atas, tombol muncul
+        window.onscroll = function() { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+
+        function keAtas() {
+            document.body.scrollTop = 0; // Untuk Safari
+            document.documentElement.scrollTop = 0; // Untuk Chrome, Firefox, IE, dan Opera
+        }
+
+        // --- LOGIKA FITUR LIGHTBOX (POP-UP) ---
+        function bukaLightbox(srcGambar) {
+            const lightbox = document.getElementById('custom-lightbox');
+            const lightboxImg = document.getElementById('img-lightbox');
+            lightboxImg.src = srcGambar;
+            lightbox.style.display = 'flex';
+        }
+
+        function tutupLightbox() {
+            document.getElementById('custom-lightbox').style.display = 'none';
+        }
+
+        // --- LOGIKA BUKU TAMU ---
+        const boxUcapan = document.getElementById('box-ucapan');
+
+        window.onload = function() { muatUcapan(); };
+
+        function kirimUcapan() {
+            const nama = document.getElementById('input-nama').value.trim();
+            const pesan = document.getElementById('input-pesan').value.trim();
+            if(nama === "" || pesan === "") { alert("Harap isi nama dan ucapan Anda!"); return; }
+
+            const dataUcapan = { nama: nama, pesan: pesan };
+            let daftarLama = JSON.parse(localStorage.getItem('ucapan_panakang')) || [];
+            daftarLama.unshift(dataUcapan);
+            localStorage.setItem('ucapan_panakang', JSON.stringify(daftarLama));
+
+            document.getElementById('input-nama').value = "";
+            document.getElementById('input-pesan').value = "";
+            muatUcapan();
+        }
+
+        function muatUcapan() {
+            let daftarLama = JSON.parse(localStorage.getItem('ucapan_panakang')) || [];
+            let htmlKonten = `
+                <div class="kotak-pesan">
+                    <span class="nama-pengirim">Sistem</span>
+                    <span class="isi-pesan">Selamat datang! Silakan tinggalkan ucapan terbaik Anda di sini.</span>
+                </div>
+            `;
+            daftarLama.forEach(item => {
+                htmlKonten += `
+                    <div class="kotak-pesan">
+                        <span class="nama-pengirim">${escapeHTML(item.nama)}</span>
+                        <span class="isi-pesan">${escapeHTML(item.pesan)}</span>
+                    </div>
+                `;
+            });
+            boxUcapan.innerHTML = htmlKonten;
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+        }
+
+        // --- ANIMASI PARTIKEL ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const particleCount = 40;
+
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.speedY = Math.random() * 0.4 - 0.2;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(230, 126, 34, ${this.opacity})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function init() { for (let i = 0; i < particleCount; i++) { particles.push(new Particle()); } }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        init(); animate();
+    </script>
+
+</body>
+</html>
