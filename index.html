@@ -103,12 +103,14 @@
             animation: munculed 1.2s cubic-bezier(0.16, 1, 0.3, 1); 
         }
         
+        /* UPDATE: Desain Box Kunjungan Lebih Profesional */
         .visitor-box { 
             background: var(--container-bg); 
             backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-color); 
             border-radius: 30px; 
-            padding: 10px 20px; 
+            padding: 10px 22px; 
             width: auto; 
             text-align: center; 
             color: var(--text-muted); 
@@ -118,8 +120,11 @@
             box-sizing: border-box; 
             animation: munculed 1.5s ease; 
             font-weight: 600; 
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        .visitor-count { color: var(--accent-color); font-weight: 800; }
+        .visitor-count { color: var(--accent-color); font-weight: 800; font-size: 1.05em; }
 
         #music-control { 
             position: fixed; 
@@ -227,8 +232,30 @@
         .btn-share { display: flex; align-items: center; justify-content: center; background-color: #25d366; color: white; text-decoration: none; padding: 14px; border-radius: var(--radius-md); font-weight: 700; margin-top: 10px; transition: var(--transition-smooth); font-size: 0.95em; border: none; width: 100%; box-sizing: border-box; cursor: pointer; }
         .btn-share:hover { background-color: #1fc157; transform: translateY(-1px); box-shadow: 0 10px 20px -5px rgba(37, 211, 102, 0.3); }
 
-        #btn-back-to-top { display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99; border: 1px solid var(--border-color); outline: none; background: var(--container-bg); backdrop-filter: blur(10px); color: var(--text-main); cursor: pointer; padding: 12px; border-radius: 50%; font-size: 18px; box-shadow: 0 10px 30px var(--shadow-color); transition: var(--transition-smooth); width: 50px; height: 50px; }
-        #btn-back-to-top:hover { background-color: var(--accent-color); color: white; transform: translateY(-3px); }
+        /* UPDATE: Desain Tombol Back to Top Premium & Terpusat */
+        #btn-back-to-top { 
+            display: none; 
+            position: fixed; 
+            bottom: 30px; 
+            right: 30px; 
+            z-index: 99; 
+            border: 1px solid var(--border-color); 
+            outline: none; 
+            background: var(--container-bg); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--accent-color); 
+            cursor: pointer; 
+            padding: 12px; 
+            border-radius: 50%; 
+            box-shadow: 0 10px 30px var(--shadow-color); 
+            transition: var(--transition-smooth); 
+            width: 50px; 
+            height: 50px; 
+            align-items: center;
+            justify-content: center;
+        }
+        #btn-back-to-top:hover { background-color: var(--accent-color); color: white; border-color: var(--accent-color); transform: translateY(-4px); box-shadow: 0 10px 20px rgba(255, 90, 31, 0.2); }
         
         @keyframes munculed { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -246,7 +273,12 @@
         <img class="lightbox-img" id="img-lightbox" src="" alt="Zoomed Image">
     </div>
     
-    <button onclick="keAtas()" id="btn-back-to-top" title="Kembali ke atas">↑</button>
+    <button onclick="keAtas()" id="btn-back-to-top" title="Kembali ke atas">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="19" x2="12" y2="5"></line>
+            <polyline points="5 12 12 5 19 12"></polyline>
+        </svg>
+    </button>
     <button id="music-control" title="Putar/Jeda Musik">🎵</button>
 
     <audio id="bg-music" loop>
@@ -257,7 +289,13 @@
         <img src="logobaru.jpg" alt="THE PANAIKANG FAMILY" class="logo">
         <div class="greeting-box" id="greetingText">Memuat ucapan...</div>
         
-        <div class="visitor-box">👁️ <span class="visitor-count" id="hitung-view">...</span> Kunjungan</div>
+        <div class="visitor-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.85;">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            Jumlah Kunjungan: <span class="visitor-count" id="hitung-view">...</span> kali
+        </div>
 
         <div class="card-profil scroll-reveal">
             <h3>Project Info</h3>
@@ -292,7 +330,7 @@
             <h3 class="section-title">Klip Video Dokumentasi</h3>
             <div class="video-wrapper">
                 <video controls preload="metadata" poster="logobaru.jpg"><source src="video1.mp4" type="video/mp4"></video>
-                <div class="caption-galeri"><strong>Kerasukan Kebun & Kelapa Muda</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Momen manis bergotong-royong menikmati kesegaran bersama.</span></div>
+                <div class="caption-galeri"><strong>Acara Kelapa Muda & Kebersamaan</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Momen manis bergotong-royong menikmati kesegaran bersama.</span></div>
             </div>
             <div class="video-wrapper">
                 <video controls preload="metadata" poster="logobaru.jpg"><source src="video2.mp4" type="video/mp4"></video>
@@ -394,8 +432,10 @@
         function setSliderPosition() { slider.style.transform = `translateX(${currentTranslate}px)`; }
         function setPositionByIndex() { currentTranslate = currentIndex * -slider.offsetWidth; prevTranslate = currentTranslate; slider.style.transform = `translateX(${currentTranslate}px)`; dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex)); }
         window.addEventListener('resize', () => { setPositionByIndex(); });
+        
         const mybutton = document.getElementById("btn-back-to-top"); window.onscroll = function() { scrollFunction() };
-        function scrollFunction() { if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) mybutton.style.display = "block"; else mybutton.style.display = "none"; }
+        // UPDATE JAVASCRIPT: Menggunakan display='flex' agar susunan ikon panah SVG di dalamnya tetap simetris sempurna di tengah
+        function scrollFunction() { if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) mybutton.style.display = "flex"; else mybutton.style.display = "none"; }
         function keAtas() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
         function bukaLightbox(srcGambar) { if (isDragging) return; const lightbox = document.getElementById('custom-lightbox'); const lightboxImg = document.getElementById('img-lightbox'); lightboxImg.src = srcGambar; lightbox.style.display = 'flex'; }
         function tutupLightbox() { document.getElementById('custom-lightbox').style.display = 'none'; }
