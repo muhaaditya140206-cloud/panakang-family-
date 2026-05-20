@@ -10,7 +10,7 @@
     <style>
         /* Desain Dasar Futuristik */
         html {
-            scroll-behavior: smooth; /* Membuat efek scroll jadi halus */
+            scroll-behavior: smooth;
         }
         
         body {
@@ -54,31 +54,32 @@
 
         .logo {
             max-width: 85%;
-            width: 280px;
-            height: 280px;
+            width: 250px;
+            height: 250px;
             object-fit: cover;
-            border-radius: 50%; /* Membuat logo baru menjadi bulat */
+            border-radius: 50%;
             margin-bottom: 25px;
             border: 3px solid #e67e22;
             filter: drop-shadow(0 0 20px rgba(230, 126, 34, 0.4));
         }
 
-        /* FITUR BARU: Kotak Ucapan Otomatis */
+        /* Kotak Ucapan Otomatis yang Lebih Pro & Ringkas */
         .greeting-box {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 15px;
-            padding: 15px;
+            padding: 12px;
             width: 100%;
             text-align: center;
             color: #e67e22;
-            font-weight: bold;
-            font-size: 1.1em;
+            font-weight: 600;
+            font-size: 1.05em;
             margin-bottom: 25px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             border-left: 4px solid #e67e22;
+            box-sizing: border-box;
         }
 
         /* Kotak Profil Bergaya Kaca (Glassmorphism) */
@@ -106,7 +107,11 @@
         }
 
         .info-item {
-            margin-bottom: 5px;
+            margin-bottom: 12px;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
         }
 
         .info-label {
@@ -353,11 +358,11 @@
         <div class="card-profil">
             <h3>Project Info</h3>
             <div class="info-item">
-                <span class="info-label">Keluarga</span>
-                <span class="info-value">THE PANAIKANG FAMILY</span>
+                <span class="info-label">Status Project</span>
+                <span class="info-value">Website Dokumentasi Resmi</span>
             </div>
             <div class="info-item">
-                <span class="info-label">Pencipta Web</span>
+                <span class="info-label">Developer Web</span>
                 <span class="info-value">Aditya</span>
             </div>
             <a href="https://wa.me/6282151939488?text=Halo%20Aditya,%20saya%20melihat%20website%20THE%20PANAIKANG%20FAMILY%20kamu!" class="btn-wa" target="_blank">
@@ -398,14 +403,14 @@
     </div>
 
     <script>
-        // --- LOGIKA UCAPAN OTOMATIS BERDASARKAN WAKTU ---
+        // --- LOGIKA UCAPAN PINTAR & BERSIH ---
         const jam = new Date().getHours();
         let ucapan = "Selamat Datang";
         if (jam >= 4 && jam < 11) ucapan = "Selamat Pagi ☀️";
         else if (jam >= 11 && jam < 15) ucapan = "Selamat Siang 🌤️";
         else if (jam >= 15 && jam < 18) ucapan = "Selamat Sore 🌅";
         else ucapan = "Selamat Malam 🌙";
-        document.getElementById('greetingText').innerHTML = `✨ ${ucapan}, THE PANAIKANG FAMILY! ✨`;
+        document.getElementById('greetingText').innerHTML = `✨ ${ucapan}, Selamat Datang! ✨`;
 
         // --- LOGIKA TOMBOL BACK TO TOP ---
         const mybutton = document.getElementById("btn-back-to-top");
