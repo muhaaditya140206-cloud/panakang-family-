@@ -48,7 +48,7 @@
         .form-guestbook input:focus, .form-guestbook textarea:focus { outline: none; border-color: var(--accent-color); }
         .btn-kirim { width: 100%; padding: 12px; background: var(--accent-color); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
         .btn-kirim:hover { background: var(--accent-hover); }
-        .daftar-ucapan { margin-top: 25px; max-height: 250px; overflow-y: auto; padding-right: 5px; }
+        .daftar-ucapan { margin-top: 25px; max-height: 350px; overflow-y: auto; padding-right: 5px; }
         .daftar-ucapan::-webkit-scrollbar { width: 5px; } .daftar-ucapan::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
         .kotak-pesan { background: var(--input-bg); border-radius: 10px; padding: 12px; margin-bottom: 10px; text-align: left; border-left: 3px solid var(--accent-color); }
         .nama-pengirim { font-weight: bold; color: var(--accent-color); font-size: 0.95em; margin-bottom: 2px; display: block; }
@@ -62,6 +62,9 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
 <body>
     <canvas id="particle-canvas"></canvas>
@@ -105,7 +108,7 @@
             <h3 class="section-title">Klip Video Dokumentasi</h3>
             <div class="video-wrapper">
                 <video controls preload="metadata" poster="logobaru.jpg"><source src="video1.mp4" type="video/mp4"></video>
-                <div class="caption-galeri"><strong>Keseruan Kebun & Kelapa Muda</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Momen manis bergotong-royong menikmati kesegaran bersama.</span></div>
+                <div class="caption-galeri"><strong>Kerasukan Kebun & Kelapa Muda</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Momen manis bergotong-royong menikmati kesegaran bersama.</span></div>
             </div>
             <div class="video-wrapper">
                 <video controls preload="metadata" poster="logobaru.jpg"><source src="video2.mp4" type="video/mp4"></video>
@@ -114,17 +117,33 @@
         </div>
 
         <div class="guestbook-section scroll-reveal">
-            <h3 class="section-title" style="margin-bottom: 15px;">Buku Tamu Keluarga</h3>
+            <h3 class="section-title" style="margin-bottom: 15px;">Buku Tamu Keluarga (Online)</h3>
             <div class="form-guestbook">
                 <input type="text" id="input-nama" placeholder="Nama Anda" required>
-                <textarea id="input-pesan" rows="3" placeholder="Tulis ucapan..." required></textarea>
-                <button class="btn-kirim" onclick="kirimUcapan()">Kirim Ucapan</button>
+                <textarea id="input-pesan" rows="3" placeholder="Tulis ucapan hangat Anda untuk keluarga..." required></textarea>
+                <button class="btn-kirim" id="btnKirim" onclick="kirimUcapan()">Kirim Ucapan</button>
             </div>
-            <div class="daftar-ucapan" id="box-ucapan"></div>
+            <div class="daftar-ucapan" id="box-ucapan">Memuat data ucapan dari internet...</div>
         </div>
     </div>
 
     <script>
+        // KONEKSI DATABASE FIREBASE MILIK ADITYA (UPDATE TERBARU)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCwsNooDMdI7v_ffz_UVPVUtBDXcC2LfU",
+            authDomain: "web-panakang.firebaseapp.com",
+            databaseURL: "https://web-panakang-default-rtdb.firebaseio.com",
+            projectId: "web-panakang",
+            storageBucket: "web-panakang.firebasestorage.app",
+            messagingSenderId: "292840669002",
+            appId: "1:292840669002:web:5af297e8fe0fafd0328bb3",
+            measurementId: "G-B5SLWFK2PV"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const ucapanRef = database.ref('buku_tamu');
+
         const jam = new Date().getHours(); let ucapan = "Selamat Datang";
         if (jam >= 4 && jam < 11) ucapan = "Selamat Pagi"; else if (jam >= 11 && jam < 15) ucapan = "Selamat Siang"; else if (jam >= 15 && jam < 18) ucapan = "Selamat Sore"; else ucapan = "Selamat Malam";
         document.getElementById('greetingText').innerHTML = `${ucapan}, Selamat Datang!`;
@@ -149,9 +168,65 @@
         function keAtas() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
         function bukaLightbox(srcGambar) { if (isDragging) return; const lightbox = document.getElementById('custom-lightbox'); const lightboxImg = document.getElementById('img-lightbox'); lightboxImg.src = srcGambar; lightbox.style.display = 'flex'; }
         function tutupLightbox() { document.getElementById('custom-lightbox').style.display = 'none'; }
-        const boxUcapan = document.getElementById('box-ucapan'); window.onload = function() { muatUcapan(); };
-        function kirimUcapan() { const nama = document.getElementById('input-nama').value.trim(); const pesan = document.getElementById('input-pesan').value.trim(); if(nama === "" || pesan === "") { alert("Harap isi nama dan ucapan Anda!"); return; } const skrg = new Date(); const hariDaftar = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]; const namaHari = hariDaftar[skrg.getDay()]; const tanggal = skrg.getDate().toString().padStart(2, '0'); const bulanDaftar = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"]; const namaBulan = bulanDaftar[skrg.getMonth()]; const tahun = skrg.getFullYear(); const jamMenit = skrg.getHours().toString().padStart(2, '0') + ":" + skrg.getMinutes().toString().padStart(2, '0'); const formatWaktu = `${namaHari}, ${tanggal} ${namaBulan} ${tahun} - ${jamMenit} WITA`; const dataUcapan = { nama: nama, pesan: pesan, waktu: formatWaktu }; let daftarLama = JSON.parse(localStorage.getItem('ucapan_panakang')) || []; daftarLama.unshift(dataUcapan); localStorage.setItem('ucapan_panakang', JSON.stringify(daftarLama)); document.getElementById('input-nama').value = ""; document.getElementById('input-pesan').value = ""; muatUcapan(); }
-        function muatUcapan() { let daftarLama = JSON.parse(localStorage.getItem('ucapan_panakang')) || []; let htmlKonten = `<div class="kotak-pesan"><span class="nama-pengirim">Sistem</span><span class="waktu-kirim">Sistem Otomatis • Pendeteksi Aktif</span><span class="isi-pesan">Selamat datang di website resmi THE PANAIKANG FAMILY! Silakan tinggalkan jejak Anda di sini.</span></div>`; daftarLama.forEach(item => { const displayWaktu = item.waktu ? item.waktu : "Baru saja"; htmlKonten += `<div class="kotak-pesan"><span class="nama-pengirim">${escapeHTML(item.nama)}</span><span class="waktu-kirim">Dikirim pada: ${escapeHTML(displayWaktu)}</span><span class="isi-pesan">${escapeHTML(item.pesan)}</span></div>`; }); boxUcapan.innerHTML = htmlKonten; }
+        
+        // FITUR KIRIM KE FIREBASE DATABASE REALTIME
+        function kirimUcapan() { 
+            const nama = document.getElementById('input-nama').value.trim(); 
+            const pesan = document.getElementById('input-pesan').value.trim(); 
+            const btn = document.getElementById('btnKirim');
+            if(nama === "" || pesan === "") { alert("Harap isi nama dan ucapan Anda!"); return; } 
+            
+            btn.disabled = true;
+            btn.innerText = "Mengirim...";
+
+            const skrg = new Date(); 
+            const hariDaftar = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]; 
+            const namaHari = hariDaftar[skrg.getDay()]; 
+            const tanggal = skrg.getDate().toString().padStart(2, '0'); 
+            const bulanDaftar = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"]; 
+            const namaBulan = bulanDaftar[skrg.getMonth()]; 
+            const tahun = skrg.getFullYear(); 
+            const jamMenit = skrg.getHours().toString().padStart(2, '0') + ":" + skrg.getMinutes().toString().padStart(2, '0'); 
+            const formatWaktu = `${namaHari}, ${tanggal} ${namaBulan} ${tahun} - ${jamMenit} WITA`; 
+            
+            // Push data langsung ke cloud server Firebase
+            ucapanRef.push({ 
+                nama: nama, 
+                pesan: pesan, 
+                waktu: formatWaktu,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            }).then(() => {
+                document.getElementById('input-nama').value = ""; 
+                document.getElementById('input-pesan').value = ""; 
+                btn.disabled = false;
+                btn.innerText = "Kirim Ucapan";
+            }).catch((error) => {
+                alert("Gagal mengirim ucapan: " + error.message);
+                btn.disabled = false;
+                btn.innerText = "Kirim Ucapan";
+            });
+        }
+
+        // MENDENGARKAN PERUBAHAN DATABASE SECARA REAL-TIME
+        const boxUcapan = document.getElementById('box-ucapan');
+        ucapanRef.orderByChild('timestamp').on('value', (snapshot) => {
+            let htmlKonten = `<div class="kotak-pesan"><span class="nama-pengirim">Sistem Cloud</span><span class="waktu-kirim">Server Firebase Resmi • Aktif</span><span class="isi-pesan">Selamat datang di website resmi THE PANAIKANG FAMILY! Kiriman ucapan Anda di sini akan langsung bisa dibaca oleh seluruh keluarga besar di HP mereka masing-masing.</span></div>`;
+            
+            let dataArray = [];
+            snapshot.forEach((childSnapshot) => {
+                dataArray.push(childSnapshot.val());
+            });
+            
+            // Urutkan paling baru di atas
+            dataArray.reverse();
+
+            dataArray.forEach(item => {
+                const displayWaktu = item.waktu ? item.waktu : "Baru saja"; 
+                htmlKonten += `<div class="kotak-pesan"><span class="nama-pengirim">${escapeHTML(item.nama)}</span><span class="waktu-kirim">Dikirim pada: ${escapeHTML(displayWaktu)}</span><span class="isi-pesan">${escapeHTML(item.pesan)}</span></div>`; 
+            });
+            boxUcapan.innerHTML = htmlKonten;
+        });
+
         function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)); }
         const canvas = document.getElementById('particle-canvas'); const ctx = canvas.getContext('2d'); let particles = []; const particleCount = 40; function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; } window.addEventListener('resize', resizeCanvas); resizeCanvas();
         class Particle { constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 2 + 0.5; this.speedX = Math.random() * 0.4 - 0.2; this.speedY = Math.random() * 0.4 - 0.2; this.opacity = Math.random() * 0.4 + 0.1; } update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width) this.speedX *= -1; if (this.y < 0 || this.y > canvas.height) this.speedY *= -1; } draw() { const style = getComputedStyle(document.documentElement); const color = style.getPropertyValue('--particle-color').trim(); ctx.fillStyle = color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); } }
