@@ -154,7 +154,7 @@
         .info-label { font-size: 0.85em; color: var(--text-muted); display: block; margin-bottom: 4px; }
         .info-value { font-size: 1.1em; font-weight: 600; color: var(--text-main); }
 
-        /* --- STYLE BARU: INTERAKTIF CAROUSEL SLIDER --- */
+        /* Carousel Slider */
         .galeri-section {
             width: 100%;
             box-sizing: border-box;
@@ -179,9 +179,7 @@
             will-change: transform;
         }
 
-        .slider-container:active {
-            cursor: grabbing;
-        }
+        .slider-container:active { cursor: grabbing; }
 
         .item-galeri {
             min-width: 100%;
@@ -193,13 +191,7 @@
             flex-direction: column;
         }
 
-        .item-galeri img { 
-            width: 100%; 
-            height: 250px; 
-            object-fit: cover; 
-            display: block; 
-            pointer-events: none; /* Mencegah bentrok drag gambar bawaan browser */
-        }
+        .item-galeri img { width: 100%; height: 250px; object-fit: cover; display: block; pointer-events: none; }
 
         .caption-galeri {
             padding: 15px;
@@ -213,28 +205,9 @@
             .caption-galeri { background: rgba(0, 0, 0, 0.2); }
         }
 
-        /* Indikator Titik Bawah Slider */
-        .slider-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--text-muted);
-            opacity: 0.4;
-            transition: all 0.3s ease;
-        }
-
-        .dot.active {
-            background: var(--accent-color);
-            opacity: 1;
-            transform: scale(1.2);
-        }
+        .slider-dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); opacity: 0.4; transition: all 0.3s ease; }
+        .dot.active { background: var(--accent-color); opacity: 1; transform: scale(1.2); }
 
         /* Lightbox Pop-up Gambar */
         .lightbox {
@@ -337,7 +310,16 @@
             border-left: 3px solid var(--accent-color);
         }
 
-        .nama-pengirim { font-weight: bold; color: var(--accent-color); font-size: 0.95em; margin-bottom: 4px; display: block; }
+        .nama-pengirim { font-weight: bold; color: var(--accent-color); font-size: 0.95em; margin-bottom: 2px; display: block; }
+        
+        /* --- STYLE BARU: TIMESTAMP WAKTU KIRIM PESAN --- */
+        .waktu-kirim {
+            font-size: 0.75em;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 6px;
+        }
+
         .isi-pesan { font-size: 0.9em; color: var(--text-main); }
 
         /* Tombol WhatsApp */
@@ -473,13 +455,12 @@
         }, { threshold: 0.15 });
         document.querySelectorAll('.scroll-reveal').forEach((el) => penjelajahElemen.observe(el));
 
-        // --- SISTEM CAROUSEL TOUCH SLIDER (SWIPE HP MURNI) ---
+        // --- CAROUSEL TOUCH SLIDER ---
         const slider = document.getElementById('slider');
         const items = document.querySelectorAll('.item-galeri');
         const dotsContainer = document.getElementById('dots-container');
         let isDragging = false, startX = 0, currentTranslate = 0, prevTranslate = 0, animationID = 0, currentIndex = 0;
 
-        // Membuat Titik Penanda Dinamis
         items.forEach((_, i) => {
             const dot = document.createElement('div');
             dot.classList.add('dot');
@@ -488,7 +469,6 @@
         });
         const dots = document.querySelectorAll('.dot');
 
-        // Deteksi Sentuhan Layar (HP) & Mouse (PC)
         slider.addEventListener('touchstart', touchStart(currentIndex));
         slider.addEventListener('touchend', touchEnd);
         slider.addEventListener('touchmove', touchMove);
@@ -497,66 +477,26 @@
         slider.addEventListener('mouseleave', touchEnd);
         slider.addEventListener('mousemove', touchMove);
 
-        function touchStart(index) {
-            return function (event) {
-                isDragging = true;
-                startX = getPositionX(event);
-                animationID = requestAnimationFrame(animation);
-            }
-        }
-        function touchMove(event) {
-            if (isDragging) {
-                const currentX = getPositionX(event);
-                currentTranslate = prevTranslate + currentX - startX;
-            }
-        }
-        function touchEnd() {
-            isDragging = false;
-            cancelAnimationFrame(animationID);
-            const movedBy = currentTranslate - prevTranslate;
-            // Jika geser lebih dari 50 pixel, pindah halaman slide
-            if (movedBy < -50 && currentIndex < items.length - 1) currentIndex++;
-            if (movedBy > 50 && currentIndex > 0) currentIndex--;
-            setPositionByIndex();
-        }
-        function getPositionX(event) {
-            return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
-        }
-        function animation() {
-            setSliderPosition();
-            if (isDragging) requestAnimationFrame(animation);
-        }
-        function setSliderPosition() {
-            slider.style.transform = `translateX(${currentTranslate}px)`;
-        }
-        function setPositionByIndex() {
-            currentTranslate = currentIndex * -slider.offsetWidth;
-            prevTranslate = currentTranslate;
-            slider.style.transform = `translateX(${currentTranslate}px)`;
-            dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
-        }
+        function touchStart(index) { return function (event) { isDragging = true; startX = getPositionX(event); animationID = requestAnimationFrame(animation); } }
+        function touchMove(event) { if (isDragging) { const currentX = getPositionX(event); currentTranslate = prevTranslate + currentX - startX; } }
+        function touchEnd() { isDragging = false; cancelAnimationFrame(animationID); const movedBy = currentTranslate - prevTranslate; if (movedBy < -50 && currentIndex < items.length - 1) currentIndex++; if (movedBy > 50 && currentIndex > 0) currentIndex--; setPositionByIndex(); }
+        function getPositionX(event) { return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; }
+        function animation() { setSliderPosition(); if (isDragging) requestAnimationFrame(animation); }
+        function setSliderPosition() { slider.style.transform = `translateX(${currentTranslate}px)`; }
+        function setPositionByIndex() { currentTranslate = currentIndex * -slider.offsetWidth; prevTranslate = currentTranslate; slider.style.transform = `translateX(${currentTranslate}px)`; dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex)); }
         window.addEventListener('resize', () => { setPositionByIndex(); });
 
         // --- LOGIKA TOMBOL BACK TO TOP ---
         const mybutton = document.getElementById("btn-back-to-top");
         window.onscroll = function() { scrollFunction() };
-        function scrollFunction() {
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) mybutton.style.display = "block";
-            else mybutton.style.display = "none";
-        }
+        function scrollFunction() { if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) mybutton.style.display = "block"; else mybutton.style.display = "none"; }
         function keAtas() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-        // --- LOGIKA FITUR LIGHTBOX (POP-UP) ---
-        function bukaLightbox(srcGambar) {
-            if (isDragging) return; // Mencegah terbuka saat tidak sengaja tersentuh sewaktu geser
-            const lightbox = document.getElementById('custom-lightbox');
-            const lightboxImg = document.getElementById('img-lightbox');
-            lightboxImg.src = srcGambar;
-            lightbox.style.display = 'flex';
-        }
+        // --- FITUR LIGHTBOX ---
+        function bukaLightbox(srcGambar) { if (isDragging) return; const lightbox = document.getElementById('custom-lightbox'); const lightboxImg = document.getElementById('img-lightbox'); lightboxImg.src = srcGambar; lightbox.style.display = 'flex'; }
         function tutupLightbox() { document.getElementById('custom-lightbox').style.display = 'none'; }
 
-        // --- LOGIKA BUKU TAMU ---
+        // --- LOGIKA BUKU TAMU DENGAN DETEKSI WAKTU PRO ---
         const boxUcapan = document.getElementById('box-ucapan');
         window.onload = function() { muatUcapan(); };
 
@@ -565,7 +505,20 @@
             const pesan = document.getElementById('input-pesan').value.trim();
             if(nama === "" || pesan === "") { alert("Harap isi nama dan ucapan Anda!"); return; }
 
-            const dataUcapan = { nama: nama, pesan: pesan };
+            // Mengambil waktu asli pengiriman pesan
+            const skrg = new Date();
+            const hariDaftar = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const namaHari = hariDaftar[skrg.getDay()];
+            const tanggal = skrg.getDate().toString().padStart(2, '0');
+            const bulanDaftar = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+            const namaBulan = bulanDaftar[skrg.getMonth()];
+            const tahun = skrg.getFullYear();
+            const jamMenit = skrg.getHours().toString().padStart(2, '0') + ":" + skrg.getMinutes().toString().padStart(2, '0');
+            
+            // Format waktu rapi pro
+            const formatWaktu = `${namaHari}, ${tanggal} ${namaBulan} ${tahun} - ${jamMenit} WITA`;
+
+            const dataUcapan = { nama: nama, pesan: pesan, waktu: formatWaktu };
             let daftarLama = JSON.parse(localStorage.getItem('ucapan_panakang')) || [];
             daftarLama.unshift(dataUcapan);
             localStorage.setItem('ucapan_panakang', JSON.stringify(daftarLama));
@@ -580,13 +533,17 @@
             let htmlKonten = `
                 <div class="kotak-pesan">
                     <span class="nama-pengirim">Sistem</span>
+                    <span class="waktu-kirim">Sistem Otomatis • Pendeteksi Aktif</span>
                     <span class="isi-pesan">Selamat datang di website resmi THE PANAIKANG FAMILY! Silakan tinggalkan jejak Anda di sini.</span>
                 </div>
             `;
             daftarLama.forEach(item => {
+                // Memberikan fallback jika ada pesan lama tanpa penanda waktu
+                const displayWaktu = item.waktu ? item.waktu : "Baru saja";
                 htmlKonten += `
                     <div class="kotak-pesan">
                         <span class="nama-pengirim">${escapeHTML(item.nama)}</span>
+                        <span class="waktu-kirim">Dikirim pada: ${escapeHTML(displayWaktu)}</span>
                         <span class="isi-pesan">${escapeHTML(item.pesan)}</span>
                     </div>
                 `;
@@ -594,9 +551,7 @@
             boxUcapan.innerHTML = htmlKonten;
         }
 
-        function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
-        }
+        function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)); }
 
         // --- ANIMASI PARTIKEL ---
         const canvas = document.getElementById('particle-canvas');
@@ -609,33 +564,13 @@
         resizeCanvas();
 
         class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = Math.random() * 0.4 - 0.2;
-                this.speedY = Math.random() * 0.4 - 0.2;
-                this.opacity = Math.random() * 0.4 + 0.1;
-            }
-            update() {
-                this.x += this.speedX; this.y += this.speedY;
-                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-            }
-            draw() {
-                const style = getComputedStyle(document.documentElement);
-                const color = style.getPropertyValue('--particle-color').trim();
-                ctx.fillStyle = color;
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-            }
+            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 2 + 0.5; this.speedX = Math.random() * 0.4 - 0.2; this.speedY = Math.random() * 0.4 - 0.2; this.opacity = Math.random() * 0.4 + 0.1; }
+            update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width) this.speedX *= -1; if (this.y < 0 || this.y > canvas.height) this.speedY *= -1; }
+            draw() { const style = getComputedStyle(document.documentElement); const color = style.getPropertyValue('--particle-color').trim(); ctx.fillStyle = color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
 
         function init() { for (let i = 0; i < particleCount; i++) { particles.push(new Particle()); } }
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
+        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
         init(); animate();
     </script>
 
