@@ -63,14 +63,14 @@
             filter: drop-shadow(0 0 20px rgba(230, 126, 34, 0.4));
         }
 
-        /* Kotak Ucapan Otomatis yang Lebih Pro & Ringkas */
+        /* Kotak Ucapan Tanpa Emoji - Super Pro & Bersih */
         .greeting-box {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 15px;
-            padding: 12px;
+            padding: 14px;
             width: 100%;
             text-align: center;
             color: #e67e22;
@@ -80,6 +80,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             border-left: 4px solid #e67e22;
             box-sizing: border-box;
+            letter-spacing: 0.5px;
         }
 
         /* Kotak Profil Bergaya Kaca (Glassmorphism) */
@@ -353,7 +354,7 @@
     <div class="container">
         <img src="logobaru.jpg" alt="THE PANAIKANG FAMILY" class="logo">
         
-        <div class="greeting-box" id="greetingText">✨ Memuat ucapan... ✨</div>
+        <div class="greeting-box" id="greetingText">Memuat ucapan...</div>
 
         <div class="card-profil">
             <h3>Project Info</h3>
@@ -403,14 +404,14 @@
     </div>
 
     <script>
-        // --- LOGIKA UCAPAN PINTAR & BERSIH ---
+        // --- SISTEM PINTAR DETEKSI WAKTU HP (Otomatis Berubah Pagi/Siang/Malam Tanpa Emoji) ---
         const jam = new Date().getHours();
         let ucapan = "Selamat Datang";
-        if (jam >= 4 && jam < 11) ucapan = "Selamat Pagi ☀️";
-        else if (jam >= 11 && jam < 15) ucapan = "Selamat Siang 🌤️";
-        else if (jam >= 15 && jam < 18) ucapan = "Selamat Sore 🌅";
-        else ucapan = "Selamat Malam 🌙";
-        document.getElementById('greetingText').innerHTML = `✨ ${ucapan}, Selamat Datang! ✨`;
+        if (jam >= 4 && jam < 11) ucapan = "Selamat Pagi";
+        else if (jam >= 11 && jam < 15) ucapan = "Selamat Siang";
+        else if (jam >= 15 && jam < 18) ucapan = "Selamat Sore";
+        else ucapan = "Selamat Malam";
+        document.getElementById('greetingText').innerHTML = `${ucapan}, Selamat Datang!`;
 
         // --- LOGIKA TOMBOL BACK TO TOP ---
         const mybutton = document.getElementById("btn-back-to-top");
@@ -425,9 +426,9 @@
             }
         }
 
+        // Efek gulir halus ke atas
         function keAtas() {
-            document.body.scrollTop = 0; 
-            document.documentElement.scrollTop = 0; 
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // --- LOGIKA FITUR LIGHTBOX (POP-UP) ---
