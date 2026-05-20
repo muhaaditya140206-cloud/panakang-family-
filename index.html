@@ -62,8 +62,15 @@
         .nama-pengirim { font-weight: bold; color: var(--accent-color); font-size: 0.95em; margin-bottom: 2px; display: block; }
         .waktu-kirim { font-size: 0.75em; color: var(--text-muted); display: block; margin-bottom: 6px; }
         .isi-pesan { font-size: 0.9em; color: var(--text-main); }
-        .btn-wa { display: flex; align-items: center; justify-content: center; background-color: var(--accent-color); color: white; text-decoration: none; padding: 12px; border-radius: 12px; font-weight: bold; margin-top: 15px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.2); }
+        
+        /* TOMBOL WHATSAPP */
+        .btn-wa { display: flex; align-items: center; justify-content: center; background-color: var(--accent-color); color: white; text-decoration: none; padding: 12px; border-radius: 12px; font-weight: bold; margin-top: 15px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.2); font-size: 0.95em; border: none; width: 100%; box-sizing: border-box; cursor: pointer; }
         .btn-wa:hover { background-color: var(--accent-hover); transform: translateY(-2px); }
+        
+        /* GAYA TOMBOL SHARE GREEN WHATSAPP */
+        .btn-share { display: flex; align-items: center; justify-content: center; background-color: #25d366; color: white; text-decoration: none; padding: 12px; border-radius: 12px; font-weight: bold; margin-top: 10px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2); font-size: 0.95em; border: none; width: 100%; box-sizing: border-box; cursor: pointer; }
+        .btn-share:hover { background-color: #128c7e; transform: translateY(-2px); }
+
         #btn-back-to-top { display: none; position: fixed; bottom: 25px; right: 25px; z-index: 99; border: none; outline: none; background-color: var(--accent-color); color: white; cursor: pointer; padding: 12px 16px; border-radius: 50%; font-size: 18px; font-weight: bold; box-shadow: 0 4px 15px var(--shadow-color); transition: all 0.3s ease; }
         #btn-back-to-top:hover { background-color: var(--accent-hover); transform: scale(1.1); }
         @keyframes munculed { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
@@ -97,9 +104,13 @@
 
         <div class="card-profil scroll-reveal">
             <h3>Project Info</h3>
-            <div class="info-item"><span class="info-label">Status Project</span><span class="info-value">Website Documentation Resmi</span></div>
+            <div class="info-item"><span class="info-label">Status Project</span><span class="info-value">Website Dokumentasi Resmi</span></div>
             <div class="info-item"><span class="info-label">Developer Web</span><span class="info-value">Aditya</span></div>
+            <div class="info-item"><span class="info-label">Email Developer</span><span class="info-value" style="font-size: 0.92em; word-break: break-all;">muha.aditya140206@gmail.com</span></div>
+            
             <a href="https://wa.me/6282151939488?text=Halo%20Aditya,%20saya%20melihat%20website%20THE%20PANAIKANG%20FAMILY%20kamu!" class="btn-wa" target="_blank">Hubungi via WhatsApp</a>
+            
+            <button class="btn-share" onclick="bagikanKeWA()">📢 Bagikan ke WA Keluarga</button>
         </div>
 
         <div class="galeri-section scroll-reveal">
@@ -166,6 +177,14 @@
             const totalKunjungan = snapshot.val() || 1;
             document.getElementById('hitung-view').innerText = totalKunjungan.toLocaleString('id-ID');
         });
+
+        // FUNGSI JAVASCRIPT UNTUK SHARE OTOMATIS
+        function bagikanKeWA() {
+            const linkWebsite = window.location.href;
+            const pesanUndangan = `Yuk intip momen kebersamaan kita dan jangan lupa isi Buku Tamu Online di Website Resmi THE PANAIKANG FAMILY di sini: \n\n${linkWebsite}`;
+            const urlShare = `https://api.whatsapp.com/send?text=${encodeURIComponent(pesanUndangan)}`;
+            window.open(urlShare, '_blank');
+        }
 
         const lagu = document.getElementById('bg-music');
         const tombolMusik = document.getElementById('music-control');
