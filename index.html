@@ -209,6 +209,35 @@
         .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); opacity: 0.4; transition: all 0.3s ease; }
         .dot.active { background: var(--accent-color); opacity: 1; transform: scale(1.2); }
 
+        /* --- STYLE BARU: DUA PLAYERS VIDEO VERTIKAL/RESPONSIF --- */
+        .video-section {
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 35px;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            background: var(--container-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 20px var(--shadow-color);
+            margin-bottom: 20px;
+        }
+
+        .video-wrapper:last-child {
+            margin-bottom: 0;
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            max-height: 400px; /* Cocok untuk video portrait/tegak */
+            background-color: #000;
+            display: block;
+            border-bottom: 1px solid var(--border-color);
+        }
+
         /* Lightbox Pop-up Gambar */
         .lightbox {
             display: none;
@@ -311,15 +340,7 @@
         }
 
         .nama-pengirim { font-weight: bold; color: var(--accent-color); font-size: 0.95em; margin-bottom: 2px; display: block; }
-        
-        /* --- STYLE BARU: TIMESTAMP WAKTU KIRIM PESAN --- */
-        .waktu-kirim {
-            font-size: 0.75em;
-            color: var(--text-muted);
-            display: block;
-            margin-bottom: 6px;
-        }
-
+        .waktu-kirim { font-size: 0.75em; color: var(--text-muted); display: block; margin-bottom: 6px; }
         .isi-pesan { font-size: 0.9em; color: var(--text-main); }
 
         /* Tombol WhatsApp */
@@ -425,6 +446,32 @@
             <div class="slider-dots" id="dots-container"></div>
         </div>
 
+        <div class="video-section scroll-reveal">
+            <h3 class="section-title">Klip Video Dokumentasi</h3>
+            
+            <div class="video-wrapper">
+                <video controls preload="metadata" poster="logobaru.jpg">
+                    <source src="video1.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+                <div class="caption-galeri">
+                    <strong>Keseruan Kebun & Kelapa Muda</strong><br>
+                    <span style="font-size: 0.85em; color: var(--text-muted);">Momen manis bergotong-royong menikmati kesegaran bersama.</span>
+                </div>
+            </div>
+
+            <div class="video-wrapper">
+                <video controls preload="metadata" poster="logobaru.jpg">
+                    <source src="video2.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+                <div class="caption-galeri">
+                    <strong>Acara Bakar Ikan Keluarga</strong><br>
+                    <span style="font-size: 0.85em; color: var(--text-muted);">Kehangatan malam dalam canda tawa dan hidangan lezat.</span>
+                </div>
+            </div>
+        </div>
+
         <div class="guestbook-section scroll-reveal">
             <h3 class="section-title" style="margin-bottom: 15px;">Buku Tamu Keluarga</h3>
             <div class="form-guestbook">
@@ -505,7 +552,6 @@
             const pesan = document.getElementById('input-pesan').value.trim();
             if(nama === "" || pesan === "") { alert("Harap isi nama dan ucapan Anda!"); return; }
 
-            // Mengambil waktu asli pengiriman pesan
             const skrg = new Date();
             const hariDaftar = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
             const namaHari = hariDaftar[skrg.getDay()];
@@ -514,8 +560,6 @@
             const namaBulan = bulanDaftar[skrg.getMonth()];
             const tahun = skrg.getFullYear();
             const jamMenit = skrg.getHours().toString().padStart(2, '0') + ":" + skrg.getMinutes().toString().padStart(2, '0');
-            
-            // Format waktu rapi pro
             const formatWaktu = `${namaHari}, ${tanggal} ${namaBulan} ${tahun} - ${jamMenit} WITA`;
 
             const dataUcapan = { nama: nama, pesan: pesan, waktu: formatWaktu };
@@ -538,7 +582,6 @@
                 </div>
             `;
             daftarLama.forEach(item => {
-                // Memberikan fallback jika ada pesan lama tanpa penanda waktu
                 const displayWaktu = item.waktu ? item.waktu : "Baru saja";
                 htmlKonten += `
                     <div class="kotak-pesan">
