@@ -4,155 +4,306 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE PANAIKANG FAMILY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Pengaturan Warna Tema (Default Terang) */
+        /* Variabel Warna Tema Modern */
         :root {
-            --bg-color: #ffffff;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
             --text-color: #2c3e50;
-            --card-bg: #f8f9fa;
-            --accent-color: #2ecc71;
-            --shadow: rgba(0, 0, 0, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --accent-color: #3498db;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --blur: blur(10px);
         }
 
-        /* Pengaturan Warna saat Mode Gelap Aktif */
         [data-theme="dark"] {
-            --bg-color: #121212;
+            --bg-gradient: linear-gradient(135deg, #141e30 0%, #243b55 100%);
             --text-color: #ffffff;
-            --card-bg: #1e1e1e;
-            --accent-color: #f1c40f;
-            --shadow: rgba(255, 255, 255, 0.05);
+            --card-bg: rgba(30, 30, 30, 0.75);
+            --accent-color: #e74c3c;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: var(--bg-color);
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
             color: var(--text-color);
             margin: 0;
             padding: 0;
-            transition: all 0.4s ease;
-            text-align: center;
+            min-height: 100vh;
+            transition: background 0.5s ease, color 0.5s ease;
+            display: flex;
+            justify-content: center;
         }
 
         .container {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+            padding: 25px 15px;
+            box-sizing: border-box;
         }
 
-        /* Tombol Fitur Canggih Dark Mode */
+        /* Tombol Mode Gelap/Terang Bulat Pro */
         .btn-toggle {
-            background-color: var(--accent-color);
-            color: #ffffff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            border-radius: 30px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 2px solid var(--accent-color);
+            padding: 8px 18px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 20px;
             cursor: pointer;
-            margin-top: 15px;
-            box-shadow: 0 4px 6px var(--shadow);
-            transition: 0.2s;
+            backdrop-filter: var(--blur);
+            box-shadow: 0 4px 10px var(--shadow);
+            transition: all 0.3s ease;
         }
-        .btn-toggle:active {
-            transform: scale(0.95);
+        .btn-toggle:hover {
+            transform: translateY(-2px);
+            background-color: var(--accent-color);
+            color: white;
         }
 
-        /* Desain Logo Baru */
+        /* Kotak Ucapan Pintar */
+        .greeting-card {
+            background: var(--card-bg);
+            padding: 12px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px var(--shadow);
+            backdrop-filter: var(--blur);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Desain Header & Logo */
+        .header-section {
+            margin-top: 25px;
+        }
+
         .logo {
-            width: 140px;
-            height: 140px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
             object-fit: cover;
-            margin-top: 25px;
             border: 4px solid var(--accent-color);
-            box-shadow: 0 4px 15px var(--shadow);
+            box-shadow: 0 8px 20px var(--shadow);
+            transition: transform 0.5s ease;
+        }
+        .logo:hover {
+            transform: rotate(360deg) scale(1.05);
         }
 
         h1 {
-            font-size: 2.2rem;
-            letter-spacing: 1px;
-            margin-top: 15px;
-            text-transform: uppercase;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 15px 0 5px 0;
+            letter-spacing: 0.5px;
         }
 
         .motto {
             font-style: italic;
+            font-size: 0.95rem;
             opacity: 0.8;
+            margin-bottom: 30px;
         }
 
-        /* Galeri Foto Konten */
+        /* Grid Galeri Foto */
         .gallery {
-            margin-top: 30px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
 
         .card {
-            background-color: var(--card-bg);
+            background: var(--card-bg);
             padding: 10px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px var(--shadow);
+            border-radius: 16px;
+            box-shadow: 0 6px 15px var(--shadow);
+            backdrop-filter: var(--blur);
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 22px var(--shadow);
         }
 
         .card img {
             width: 100%;
-            height: 200px;
+            height: 180px;
             object-fit: cover;
+            border-radius: 12px;
+            transition: opacity 0.3s;
+        }
+        .card:hover img {
+            opacity: 0.9;
+        }
+
+        .card p {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 10px 0 5px 0;
+        }
+
+        /* 🔴 FITUR BARU: SISTEM ANIMASI MENGULIR (FADE IN UP) */
+        .animate-fade {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 🔴 FITUR BARU: LAYAR ZOOM FOTO (LIGHTBOX MODAL) */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox.show {
+            display: flex;
+            opacity: 1;
+        }
+        .lightbox-img {
+            max-width: 90%;
+            max-height: 75%;
             border-radius: 8px;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+        }
+        .lightbox.show .lightbox-img {
+            transform: scale(1);
+        }
+        /* Tombol Keluar X */
+        .close-btn {
+            position: absolute;
+            top: 25px;
+            right: 30px;
+            color: #fff;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .close-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
         }
 
         footer {
-            margin-top: 50px;
-            font-size: 0.8rem;
+            margin-top: 60px;
+            font-size: 0.75rem;
             opacity: 0.6;
             padding-bottom: 20px;
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <button class="btn-toggle" id="themeToggle">🌙 MODE GELAP</button>
+        <div class="animate-fade">
+            <button class="btn-toggle" id="themeToggle">🌙 MODE GELAP</button>
+        </div>
 
-        <img src="logobaru.jpg" alt="Logo Keluarga" class="logo">
+        <div class="greeting-card animate-fade delay-1" id="greetingBox">
+            ✨ <span id="greetingText">Halo, Selamat Datang!</span> ✨
+        </div>
 
-        <h1>THE PANAIKANG FAMILY</h1>
-        <p class="motto">"Saling menjaga, selalu bersama, selamanya kompak."</p>
+        <div class="header-section animate-fade delay-2">
+            <img src="logobaru.jpg" alt="Logo Keluarga" class="logo">
+            <h1>THE PANAIKANG FAMILY</h1>
+            <p class="motto">"Saling menjaga, selalu bersama, selamanya kompak."</p>
+        </div>
 
-        <div class="gallery">
-            <div class="card">
-                <img src="konten1.jpg" alt="Dokumentasi 1">
+        <div class="gallery animate-fade delay-3">
+            <div class="card" onclick="zoomImage('konten1.jpg')">
+                <img src="konten1.jpg" alt="Momen 1">
                 <p>Momen Kebersamaan 1</p>
             </div>
-            <div class="card">
-                <img src="konten2.jpg" alt="Dokumentasi 2">
+            <div class="card" onclick="zoomImage('konten2.jpg')">
+                <img src="konten2.jpg" alt="Momen 2">
                 <p>Momen Kebersamaan 2</p>
             </div>
         </div>
 
-        <footer>
-            &copy; 2026 THE PANAIKANG FAMILY. Created by Aditya.
+        <footer class="animate-fade delay-3">
+            &copy; 2026 THE PANAIKANG FAMILY. <br>Designed Pro by Aditya.
         </footer>
     </div>
 
+    <div id="lightboxModal" class="lightbox" onclick="closeZoom()">
+        <span class="close-btn">&times;</span>
+        <img class="lightbox-img" id="imgZoomed" src="" alt="Zoomed">
+    </div>
+
     <script>
+        // 1. Logika Ucapan Otomatis Berdasarkan Waktu HP
+        const jam = new Date().getHours();
+        let ucapan = "Selamat Datang";
+        if (jam >= 4 && jam < 11) ucapan = "Selamat Pagi ☀️";
+        else if (jam >= 11 && jam < 15) ucapan = "Selamat Siang 🌤️";
+        else if (jam >= 15 && jam < 18) ucapan = "Selamat Sore 🌅";
+        else ucapan = "Selamat Malam 🌙";
+        document.getElementById('greetingText').textContent = ucapan + ", Keluarga Besar!";
+
+        // 2. Logika Tombol Mode Gelap / Terang Mulus
         const toggleButton = document.getElementById('themeToggle');
         toggleButton.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             if (currentTheme === 'dark') {
                 document.documentElement.removeAttribute('data-theme');
                 toggleButton.textContent = '🌙 MODE GELAP';
-                toggleButton.style.color = '#ffffff';
             } else {
                 document.documentElement.setAttribute('data-theme', 'dark');
                 toggleButton.textContent = '☀️ MODE TERANG';
-                toggleButton.style.color = '#121212';
             }
         });
+
+        // 3. Logika Fitur Zoom Foto (Lightbox)
+        const modal = document.getElementById('lightboxModal');
+        const modalImg = document.getElementById('imgZoomed');
+
+        function zoomImage(imgSrc) {
+            modal.classList.add('show');
+            modalImg.src = imgSrc;
+        }
+
+        function closeZoom() {
+            modal.classList.remove('show');
+        }
     </script>
 
 </body>
 </html>
-
 
