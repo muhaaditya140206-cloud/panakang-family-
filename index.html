@@ -15,7 +15,12 @@
         #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
         .container { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 500px; padding: 40px 20px; box-sizing: border-box; }
         .logo { max-width: 85%; width: 250px; height: 250px; object-fit: cover; border-radius: 50%; margin-bottom: 25px; border: 3px solid var(--accent-color); filter: drop-shadow(0 0 20px rgba(230, 126, 34, 0.2)); transition: border-color 0.5s ease; animation: munculed 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
-        .greeting-box { background: var(--container-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-color); border-radius: 15px; padding: 14px; width: 100%; text-align: center; color: var(--accent-color); font-weight: 600; font-size: 1.05em; margin-bottom: 25px; box-shadow: 0 5px 15px var(--shadow-color); border-left: 4px solid var(--accent-color); box-sizing: border-box; letter-spacing: 0.5px; animation: munculed 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .greeting-box { background: var(--container-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-color); border-radius: 15px; padding: 14px; width: 100%; text-align: center; color: var(--accent-color); font-weight: 600; font-size: 1.05em; margin-bottom: 15px; box-shadow: 0 5px 15px var(--shadow-color); border-left: 4px solid var(--accent-color); box-sizing: border-box; letter-spacing: 0.5px; animation: munculed 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        /* GAYA UNTUK VISITOR COUNTER */
+        .visitor-box { background: var(--container-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color); border-radius: 12px; padding: 8px 15px; width: 100%; text-align: center; color: var(--text-muted); font-size: 0.85em; margin-bottom: 20px; box-shadow: 0 4px 10px var(--shadow-color); box-sizing: border-box; animation: munculed 1.5s ease; font-weight: 500; }
+        .visitor-count { color: var(--accent-color); font-weight: bold; font-size: 1.1em; }
+
         .scroll-reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
         .scroll-reveal.active { opacity: 1; transform: translateY(0); }
         .card-profil { background: var(--container-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-color); border-radius: 20px; padding: 25px; width: 100%; box-sizing: border-box; box-shadow: 0 10px 30px var(--shadow-color); text-align: left; border-left: 4px solid var(--accent-color); margin-bottom: 30px; }
@@ -77,6 +82,8 @@
     <div class="container">
         <img src="logobaru.jpg" alt="THE PANAIKANG FAMILY" class="logo">
         <div class="greeting-box" id="greetingText">Memuat ucapan...</div>
+        
+        <div class="visitor-box">👁️ Website ini telah dikunjungi: <span class="visitor-count" id="hitung-view">...</span> kali</div>
 
         <div class="card-profil scroll-reveal">
             <h3>Project Info</h3>
@@ -128,7 +135,7 @@
     </div>
 
     <script>
-        // KONEKSI DATABASE FIREBASE MILIK ADITYA (UPDATE TERBARU)
+        // KONEKSI DATABASE FIREBASE ADITYA
         const firebaseConfig = {
             apiKey: "AIzaSyCwsNooDMdI7v_ffz_UVPVUtBDXcC2LfU",
             authDomain: "web-panakang.firebaseapp.com",
@@ -143,6 +150,20 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const ucapanRef = database.ref('buku_tamu');
+        
+        // Alamat database baru khusus untuk menghitung counter
+        const counterRef = database.ref('jumlah_pengunjung');
+
+        // PROSES HITUNG VISITOR JALAN OTOMATIS SAAT WEB DIBUKA
+        counterRef.transaction((currentValue) => {
+            return (currentValue || 0) + 1;
+        });
+
+        // TAMPILKAN ANGKA VISITOR SECARA REAL-TIME DARI FIREBASE
+        counterRef.on('value', (snapshot) => {
+            const totalKunjungan = snapshot.val() || 1;
+            document.getElementById('hitung-view').innerText = totalKunjungan.toLocaleString('id-ID');
+        });
 
         const jam = new Date().getHours(); let ucapan = "Selamat Datang";
         if (jam >= 4 && jam < 11) ucapan = "Selamat Pagi"; else if (jam >= 11 && jam < 15) ucapan = "Selamat Siang"; else if (jam >= 15 && jam < 18) ucapan = "Selamat Sore"; else ucapan = "Selamat Malam";
@@ -169,7 +190,6 @@
         function bukaLightbox(srcGambar) { if (isDragging) return; const lightbox = document.getElementById('custom-lightbox'); const lightboxImg = document.getElementById('img-lightbox'); lightboxImg.src = srcGambar; lightbox.style.display = 'flex'; }
         function tutupLightbox() { document.getElementById('custom-lightbox').style.display = 'none'; }
         
-        // FITUR KIRIM KE FIREBASE DATABASE REALTIME
         function kirimUcapan() { 
             const nama = document.getElementById('input-nama').value.trim(); 
             const pesan = document.getElementById('input-pesan').value.trim(); 
@@ -189,7 +209,6 @@
             const jamMenit = skrg.getHours().toString().padStart(2, '0') + ":" + skrg.getMinutes().toString().padStart(2, '0'); 
             const formatWaktu = `${namaHari}, ${tanggal} ${namaBulan} ${tahun} - ${jamMenit} WITA`; 
             
-            // Push data langsung ke cloud server Firebase
             ucapanRef.push({ 
                 nama: nama, 
                 pesan: pesan, 
@@ -207,7 +226,6 @@
             });
         }
 
-        // MENDENGARKAN PERUBAHAN DATABASE SECARA REAL-TIME
         const boxUcapan = document.getElementById('box-ucapan');
         ucapanRef.orderByChild('timestamp').on('value', (snapshot) => {
             let htmlKonten = `<div class="kotak-pesan"><span class="nama-pengirim">Sistem Cloud</span><span class="waktu-kirim">Server Firebase Resmi • Aktif</span><span class="isi-pesan">Selamat datang di website resmi THE PANAIKANG FAMILY! Kiriman ucapan Anda di sini akan langsung bisa dibaca oleh seluruh keluarga besar di HP mereka masing-masing.</span></div>`;
@@ -217,7 +235,6 @@
                 dataArray.push(childSnapshot.val());
             });
             
-            // Urutkan paling baru di atas
             dataArray.reverse();
 
             dataArray.forEach(item => {
