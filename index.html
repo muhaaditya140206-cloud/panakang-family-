@@ -8,493 +8,94 @@
     <link rel="icon" type="image/jpeg" href="logobaru.jpg">
     
     <style>
-        /* --- VARIABEL WARNA (Dinamis Otomatis) --- */
-        :root {
-            --bg-color: #f8f9fa;
-            --container-bg: rgba(255, 255, 255, 0.8);
-            --border-color: rgba(0, 0, 0, 0.08);
-            --text-main: #212529;
-            --text-muted: #6c757d;
-            --accent-color: #e67e22;
-            --accent-hover: #d35400;
-            --shadow-color: rgba(0, 0, 0, 0.05);
-            --input-bg: rgba(0, 0, 0, 0.03);
-            --particle-color: rgba(230, 126, 34, 0.15);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #0d1117;
-                --container-bg: rgba(255, 255, 255, 0.04);
-                --border-color: rgba(255, 255, 255, 0.08);
-                --text-main: #f0f6fc;
-                --text-muted: #8b949e;
-                --shadow-color: rgba(0, 0, 0, 0.5);
-                --input-bg: rgba(0, 0, 0, 0.3);
-                --particle-color: rgba(230, 126, 34, 0.4);
-            }
-        }
-
-        /* Desain Dasar */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color); 
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-            transition: background-color 0.5s ease, color 0.5s ease;
-        }
-
-        /* Kanvas Efek Partikel */
-        #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* Konten Utama */
-        .container {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 500px;
-            padding: 40px 20px;
-            box-sizing: border-box;
-        }
-
-        .logo {
-            max-width: 85%;
-            width: 250px;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 25px;
-            border: 3px solid var(--accent-color);
-            filter: drop-shadow(0 0 20px rgba(230, 126, 34, 0.2));
-            transition: border-color 0.5s ease;
-            animation: munculed 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Kotak Ucapan */
-        .greeting-box {
-            background: var(--container-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
-            border-radius: 15px;
-            padding: 14px;
-            width: 100%;
-            text-align: center;
-            color: var(--accent-color);
-            font-weight: 600;
-            font-size: 1.05em;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 15px var(--shadow-color);
-            border-left: 4px solid var(--accent-color);
-            box-sizing: border-box;
-            letter-spacing: 0.5px;
-            animation: munculed 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Style Animasi Scroll */
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .scroll-reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Kotak Profil */
-        .card-profil {
-            background: var(--container-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 25px;
-            width: 100%;
-            box-sizing: border-box;
-            box-shadow: 0 10px 30px var(--shadow-color);
-            text-align: left;
-            border-left: 4px solid var(--accent-color);
-            margin-bottom: 30px;
-        }
-
-        .card-profil h3, .section-title {
-            margin: 0 0 15px 0;
-            font-size: 1.1em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .info-item { margin-bottom: 12px; }
-        .info-item:last-child { margin-bottom: 0; }
+        :root { --bg-color: #f8f9fa; --container-bg: rgba(255, 255, 255, 0.8); --border-color: rgba(0, 0, 0, 0.08); --text-main: #212529; --text-muted: #6c757d; --accent-color: #e67e22; --accent-hover: #d35400; --shadow-color: rgba(0, 0, 0, 0.05); --input-bg: rgba(0, 0, 0, 0.03); --particle-color: rgba(230, 126, 34, 0.15); }
+        @media (prefers-color-scheme: dark) { :root { --bg-color: #0d1117; --container-bg: rgba(255, 255, 255, 0.04); --border-color: rgba(255, 255, 255, 0.08); --text-main: #f0f6fc; --text-muted: #8b949e; --shadow-color: rgba(0, 0, 0, 0.5); --input-bg: rgba(0, 0, 0, 0.3); --particle-color: rgba(230, 126, 34, 0.4); } }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; position: relative; transition: background-color 0.5s ease, color 0.5s ease; }
+        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .container { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 500px; padding: 40px 20px; box-sizing: border-box; }
+        .logo { max-width: 85%; width: 250px; height: 250px; object-fit: cover; border-radius: 50%; margin-bottom: 25px; border: 3px solid var(--accent-color); filter: drop-shadow(0 0 20px rgba(230, 126, 34, 0.2)); transition: border-color 0.5s ease; animation: munculed 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .greeting-box { background: var(--container-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-color); border-radius: 15px; padding: 14px; width: 100%; text-align: center; color: var(--accent-color); font-weight: 600; font-size: 1.05em; margin-bottom: 25px; box-shadow: 0 5px 15px var(--shadow-color); border-left: 4px solid var(--accent-color); box-sizing: border-box; letter-spacing: 0.5px; animation: munculed 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .scroll-reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .scroll-reveal.active { opacity: 1; transform: translateY(0); }
+        .card-profil { background: var(--container-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-color); border-radius: 20px; padding: 25px; width: 100%; box-sizing: border-box; box-shadow: 0 10px 30px var(--shadow-color); text-align: left; border-left: 4px solid var(--accent-color); margin-bottom: 30px; }
+        .card-profil h3, .section-title { margin: 0 0 15px 0; font-size: 1.1em; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .info-item { margin-bottom: 12px; } .info-item:last-child { margin-bottom: 0; }
         .info-label { font-size: 0.85em; color: var(--text-muted); display: block; margin-bottom: 4px; }
         .info-value { font-size: 1.1em; font-weight: 600; color: var(--text-main); }
-
-        /* Carousel Slider */
-        .galeri-section {
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 35px;
-        }
-
+        .galeri-section { width: 100%; box-sizing: border-box; margin-bottom: 35px; }
         .section-title { text-align: left; padding-left: 5px; color: var(--accent-color); }
-        
-        .slider-wrapper {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px var(--shadow-color);
-        }
-
-        .slider-container {
-            display: flex;
-            width: 100%;
-            cursor: grab;
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: transform;
-        }
-
+        .slider-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 15px; box-shadow: 0 8px 20px var(--shadow-color); }
+        .slider-container { display: flex; width: 100%; cursor: grab; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); will-change: transform; }
         .slider-container:active { cursor: grabbing; }
-
-        .item-galeri {
-            min-width: 100%;
-            width: 100%;
-            background: var(--container-bg);
-            box-sizing: border-box;
-            user-select: none;
-            display: flex;
-            flex-direction: column;
-        }
-
+        .item-galeri { min-width: 100%; width: 100%; background: var(--container-bg); box-sizing: border-box; user-select: none; display: flex; flex-direction: column; }
         .item-galeri img { width: 100%; height: 250px; object-fit: cover; display: block; pointer-events: none; }
-
-        .caption-galeri {
-            padding: 15px;
-            font-size: 0.95em;
-            color: var(--text-main);
-            background: rgba(0, 0, 0, 0.02);
-            text-align: left;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .caption-galeri { background: rgba(0, 0, 0, 0.2); }
-        }
-
-        .slider-dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); opacity: 0.4; transition: all 0.3s ease; margin-bottom: 4px; }
+        .caption-galeri { padding: 15px; font-size: 0.95em; color: var(--text-main); background: rgba(0, 0, 0, 0.02); text-align: left; }
+        @media (prefers-color-scheme: dark) { .caption-galeri { background: rgba(0, 0, 0, 0.2); } }
+        .slider-dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); opacity: 0.4; transition: all 0.3s ease; }
         .dot.active { background: var(--accent-color); opacity: 1; transform: scale(1.2); }
-
-        /* Dua Players Video Vertikal */
-        .video-section {
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 35px;
-        }
-
-        .video-wrapper {
-            width: 100%;
-            border-radius: 15px;
-            overflow: hidden;
-            background: var(--container-bg);
-            border: 1px solid var(--border-color);
-            box-shadow: 0 8px 20px var(--shadow-color);
-            margin-bottom: 20px;
-        }
-
+        .video-section { width: 100%; box-sizing: border-box; margin-bottom: 35px; }
+        .video-wrapper { width: 100%; border-radius: 15px; overflow: hidden; background: var(--container-bg); border: 1px solid var(--border-color); box-shadow: 0 8px 20px var(--shadow-color); margin-bottom: 20px; }
         .video-wrapper:last-child { margin-bottom: 0; }
-
-        .video-wrapper video {
-            width: 100%;
-            max-height: 400px;
-            background-color: #000;
-            display: block;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        /* Lightbox Pop-up Gambar */
-        .lightbox {
-            display: none;
-            position: fixed;
-            z-index: 999;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(10, 15, 23, 0.95);
-            backdrop-filter: blur(8px);
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .lightbox-img {
-            max-width: 90%;
-            max-height: 80%;
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            animation: zoomIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .lightbox-close {
-            position: absolute;
-            top: 20px;
-            right: 25px;
-            color: #f0f6fc;
-            font-size: 35px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-        }
-
+        .video-wrapper video { width: 100%; max-height: 400px; background-color: #000; display: block; border-bottom: 1px solid var(--border-color); }
+        .lightbox { display: none; position: fixed; z-index: 999; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(10, 15, 23, 0.95); backdrop-filter: blur(8px); justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
+        .lightbox-img { max-width: 90%; max-height: 80%; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); animation: zoomIn 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .lightbox-close { position: absolute; top: 20px; right: 25px; color: #f0f6fc; font-size: 35px; font-weight: bold; cursor: pointer; transition: 0.2s; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border-radius: 50%; }
         .lightbox-close:hover { color: var(--accent-color); background: rgba(255,255,255,0.2); transform: scale(1.1); }
-
-        /* Buku Tamu */
-        .guestbook-section {
-            width: 100%;
-            box-sizing: border-box;
-            background: var(--container-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 30px var(--shadow-color);
-        }
-
-        .form-guestbook input, .form-guestbook textarea {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 12px;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            color: var(--text-main);
-            font-family: inherit;
-            box-sizing: border-box;
-            font-size: 0.95em;
-        }
-
-        .form-guestbook input:focus, .form-guestbook textarea:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
-
-        .btn-kirim {
-            width: 100%;
-            padding: 12px;
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
+        .guestbook-section { width: 100%; box-sizing: border-box; background: var(--container-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px var(--shadow-color); }
+        .form-guestbook input, .form-guestbook textarea { width: 100%; padding: 12px; margin-bottom: 12px; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-main); font-family: inherit; box-sizing: border-box; font-size: 0.95em; }
+        .form-guestbook input:focus, .form-guestbook textarea:focus { outline: none; border-color: var(--accent-color); }
+        .btn-kirim { width: 100%; padding: 12px; background: var(--accent-color); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
         .btn-kirim:hover { background: var(--accent-hover); }
-
         .daftar-ucapan { margin-top: 25px; max-height: 250px; overflow-y: auto; padding-right: 5px; }
-        .daftar-ucapan::-webkit-scrollbar { width: 5px; }
-        .daftar-ucapan::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-
-        .kotak-pesan {
-            background: var(--input-bg);
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 10px;
-            text-align: left;
-            border-left: 3px solid var(--accent-color);
-        }
-
+        .daftar-ucapan::-webkit-scrollbar { width: 5px; } .daftar-ucapan::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        .kotak-pesan { background: var(--input-bg); border-radius: 10px; padding: 12px; margin-bottom: 10px; text-align: left; border-left: 3px solid var(--accent-color); }
         .nama-pengirim { font-weight: bold; color: var(--accent-color); font-size: 0.95em; margin-bottom: 2px; display: block; }
         .waktu-kirim { font-size: 0.75em; color: var(--text-muted); display: block; margin-bottom: 6px; }
         .isi-pesan { font-size: 0.9em; color: var(--text-main); }
-
-        /* Tombol WhatsApp */
-        .btn-wa {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--accent-color);
-            color: white;
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 12px;
-            font-weight: bold;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.2);
-        }
-
+        .btn-wa { display: flex; align-items: center; justify-content: center; background-color: var(--accent-color); color: white; text-decoration: none; padding: 12px; border-radius: 12px; font-weight: bold; margin-top: 15px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.2); }
         .btn-wa:hover { background-color: var(--accent-hover); transform: translateY(-2px); }
-
-        /* Tombol Back to Top */
-        #btn-back-to-top {
-            display: none;
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 99;
-            border: none;
-            outline: none;
-            background-color: var(--accent-color);
-            color: white;
-            cursor: pointer;
-            padding: 12px 16px;
-            border-radius: 50%;
-            font-size: 18px;
-            font-weight: bold;
-            box-shadow: 0 4px 15px var(--shadow-color);
-            transition: all 0.3s ease;
-        }
-
+        #btn-back-to-top { display: none; position: fixed; bottom: 25px; right: 25px; z-index: 99; border: none; outline: none; background-color: var(--accent-color); color: white; cursor: pointer; padding: 12px 16px; border-radius: 50%; font-size: 18px; font-weight: bold; box-shadow: 0 4px 15px var(--shadow-color); transition: all 0.3s ease; }
         #btn-back-to-top:hover { background-color: var(--accent-hover); transform: scale(1.1); }
-
-        /* Keyframes Animasi */
-        @keyframes munculed {
-            from { opacity: 0; transform: translateY(30px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+        @keyframes munculed { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
-
     <canvas id="particle-canvas"></canvas>
-
     <div id="custom-lightbox" class="lightbox" onclick="tutupLightbox()">
         <span class="lightbox-close" onclick="tutupLightbox()">&times;</span>
         <img class="lightbox-img" id="img-lightbox" src="" alt="Zoomed Image">
     </div>
-
     <button onclick="keAtas()" id="btn-back-to-top" title="Kembali ke atas">↑</button>
 
     <div class="container">
         <img src="logobaru.jpg" alt="THE PANAIKANG FAMILY" class="logo">
-        
         <div class="greeting-box" id="greetingText">Memuat ucapan...</div>
 
         <div class="card-profil scroll-reveal">
             <h3>Project Info</h3>
-            <div class="info-item">
-                <span class="info-label">Status Project</span>
-                <span class="info-value">Website Dokumentasi Resmi</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Developer Web</span>
-                <span class="info-value">Aditya</span>
-            </div>
-            <a href="https://wa.me/6282151939488?text=Halo%20Aditya,%20saya%20melihat%20website%20THE%20PANAIKANG%20FAMILY%20kamu!" class="btn-wa" target="_blank">
-                Hubungi via WhatsApp
-            </a>
+            <div class="info-item"><span class="info-label">Status Project</span><span class="info-value">Website Dokumentasi Resmi</span></div>
+            <div class="info-item"><span class="info-label">Developer Web</span><span class="info-value">Aditya</span></div>
+            <a href="https://wa.me/6282151939488?text=Halo%20Aditya,%20saya%20melihat%20website%20THE%20PANAIKANG%20FAMILY%20kamu!" class="btn-wa" target="_blank">Hubungi via WhatsApp</a>
         </div>
 
         <div class="galeri-section scroll-reveal">
             <h3 class="section-title">Dokumentasi & Kegiatan</h3>
             <div class="slider-wrapper">
                 <div class="slider-container" id="slider">
-                    <div class="item-galeri" onclick="bukaLightbox('konten1.jpg')">
-                        <img src="konten1.jpg" alt="Isi Web 1">
-                        <div class="caption-galeri">
-                            <strong>Keluarga Besar</strong><br>
-                            <span style="font-size: 0.85em; color: var(--text-muted);">Momen kebersamaan yang tak terlupakan.</span>
-                        </div>
-                    </div>
-                    <div class="item-galeri" onclick="bukaLightbox('konten2.jpg')">
-                        <img src="konten2.jpg" alt="Isi Web 2">
-                        <div class="caption-galeri">
-                            <strong>Aktivitas & Acara</strong><br>
-                            <span style="font-size: 0.85em; color: var(--text-muted);">Agenda seru dari THE PANAIKANG FAMILY.</span>
-                        </div>
-                    </div>
-                    <div class="item-galeri" onclick="bukaLightbox('konten3.jpg')">
-                        <img src="konten3.jpg" alt="Isi Web 3">
-                        <div class="caption-galeri">
-                            <strong>Keceriaan Bersama</strong><br>
-                            <span style="font-size: 0.85em; color: var(--text-muted);">Tawa dan canda yang selalu menghiasi hari.</span>
-                        </div>
-                    </div>
-                    <div class="item-galeri" onclick="bukaLightbox('konten4.jpg')">
-                        <img src="konten4.jpg" alt="Isi Web 4">
-                        <div class="caption-galeri">
-                            <strong>Dokumentasi Spesial</strong><br>
-                            <span style="font-size: 0.85em; color: var(--text-muted);">Catatan momen berharga keluarga.</span>
-                        </div>
-                    </div>
-                    <div class="item-galeri" onclick="bukaLightbox('konten5.jpg')">
-                        <img src="konten5.jpg" alt="Isi Web 5">
-                        <div class="caption-galeri">
-                            <strong>Harmoni Keluarga</strong><br>
-                            <span style="font-size: 0.85em; color: var(--text-muted);">Selalu kompak dalam setiap kegiatan.</span>
-                        </div>
-                    </div>
-                    <div class="item-galeri" onclick="bukaLightbox('konten6.jpg')">
-                        <img src="konten6.jpg" alt="Isi Web 6">
-                        <div class="caption-galeri">
-                            <strong>Potret Kenangan</strong><br>
-                            <span style="font-size: 0.85em; color: var(--text-muted);">Mengabadikan senyum terbaik keluarga.</span>
-                        </div>
-                    </div>
-                    <div class="item-galeri" onclick="bukaLightbox('konten7.jpg')">
-                        <img src="konten7.jpg" alt="Isi Web 7">
-                        <div class="caption-galeri">
-                            <strong>Semangat Kebersamaan</strong><br>
-                            <span style="font-size: 0.85em; color: var(--text-muted);">Dukungan penuh dalam setiap kesempatan.</span>
-                        </div>
-                    </div>
-                    <div class="item-galeri" onclick="bukaLightbox('konten8.jpg')">
-                        <img src="konten8.jpg" alt="Isi Web 8">
-                        <div class="caption-galeri">
-                            <strong>Momen Manis</strong><br>
-                            <span style="font-size: 0.85em; color: var(--text-muted);">Kehangatan yang tak akan pudar.</span>
-                        </div>
-                    </div>
-                    <div class="item-galeri" onclick="bukaLightbox('konten9.jpg')">
-                        <img src="konten9.jpg" alt="Isi Web 9">
-                        <div class="caption-galeri">
-                            <strong>Cerita Hari Ini</strong><br>
-                            <span style="font-size: 0.85em; color: var(--text-muted);">Kebahagiaan sederhana yang kita ciptakan.</span>
-                        </div>
-                    </div>
-                    <div class="item-galeri" onclick="bukaLightbox('konten10.jpg')">
-                        <img src="konten10.jpg" alt="Isi Web 10">
-                        <div class="caption-galeri">
-                            <strong>Jejak Langkah</strong><br>
-                            <span style="font-size: 0.85em; color: var(--text-muted);">Melangkah bersama mengukir kenangan indah.</span>
-                        </div>
-                    </div>
+                    <div class="item-galeri" onclick="bukaLightbox('161457.jpg')"><img src="161457.jpg" alt="Web 1"><div class="caption-galeri"><strong>Keluarga Besar</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Momen kebersamaan yang tak terlupakan.</span></div></div>
+                    <div class="item-galeri" onclick="bukaLightbox('161455.jpg')"><img src="161455.jpg" alt="Web 2"><div class="caption-galeri"><strong>Aktivitas & Acara</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Agenda seru dari THE PANAIKANG FAMILY.</span></div></div>
+                    <div class="item-galeri" onclick="bukaLightbox('161454.jpg')"><img src="161454.jpg" alt="Web 3"><div class="caption-galeri"><strong>Keceriaan Bersama</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Tawa dan canda yang selalu menghiasi hari.</span></div></div>
+                    <div class="item-galeri" onclick="bukaLightbox('161453.jpg')"><img src="161453.jpg" alt="Web 4"><div class="caption-galeri"><strong>Dokumentasi Spesial</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Catatan momen berharga keluarga.</span></div></div>
+                    <div class="item-galeri" onclick="bukaLightbox('161452.jpg')"><img src="161452.jpg" alt="Web 5"><div class="caption-galeri"><strong>Harmoni Keluarga</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Selalu kompak dalam setiap kegiatan.</span></div></div>
+                    <div class="item-galeri" onclick="bukaLightbox('161451.jpg')"><img src="161451.jpg" alt="Web 6"><div class="caption-galeri"><strong>Potret Kenangan</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Mengabadikan senyum terbaik keluarga.</span></div></div>
+                    <div class="item-galeri" onclick="bukaLightbox('161450.jpg')"><img src="161450.jpg" alt="Web 7"><div class="caption-galeri"><strong>Semangat Kebersamaan</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Dukungan penuh dalam setiap kesempatan.</span></div></div>
+                    <div class="item-galeri" onclick="bukaLightbox('161433.jpg')"><img src="161433.jpg" alt="Web 8"><div class="caption-galeri"><strong>Momen Manis</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Kehangatan yang tak akan pudar.</span></div></div>
+                    <div class="item-galeri" onclick="bukaLightbox('161430.jpg')"><img src="161430.jpg" alt="Web 9"><div class="caption-galeri"><strong>Cerita Kita</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Langkah bersama mengukir waktu.</span></div></div>
+                    <div class="item-galeri" onclick="bukaLightbox('161429.jpg')"><img src="161429.jpg" alt="Web 10"><div class="caption-galeri"><strong>Jejak Keluarga</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Kisah indah yang selalu dikenang.</span></div></div>
                 </div>
             </div>
             <div class="slider-dots" id="dots-container"></div>
@@ -502,27 +103,13 @@
 
         <div class="video-section scroll-reveal">
             <h3 class="section-title">Klip Video Dokumentasi</h3>
-            
             <div class="video-wrapper">
-                <video controls preload="metadata" poster="logobaru.jpg">
-                    <source src="video1.mp4" type="video/mp4">
-                    Browser Anda tidak mendukung pemutar video.
-                </video>
-                <div class="caption-galeri">
-                    <strong>Keseruan Kebun & Kelapa Muda</strong><br>
-                    <span style="font-size: 0.85em; color: var(--text-muted);">Momen manis bergotong-royong menikmati kesegaran bersama.</span>
-                </div>
+                <video controls preload="metadata" poster="logobaru.jpg"><source src="video1.mp4" type="video/mp4"></video>
+                <div class="caption-galeri"><strong>Keseruan Kebun & Kelapa Muda</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Momen manis bergotong-royong menikmati kesegaran bersama.</span></div>
             </div>
-
             <div class="video-wrapper">
-                <video controls preload="metadata" poster="logobaru.jpg">
-                    <source src="video2.mp4" type="video/mp4">
-                    Browser Anda tidak mendukung pemutar video.
-                </video>
-                <div class="caption-galeri">
-                    <strong>Acara Bakar Ikan Keluarga</strong><br>
-                    <span style="font-size: 0.85em; color: var(--text-muted);">Keseruan di siang hari dalam canda tawa dan hidangan lezat.</span>
-                </div>
+                <video controls preload="metadata" poster="logobaru.jpg"><source src="video2.mp4" type="video/mp4"></video>
+                <div class="caption-galeri"><strong>Acara Bakar Ikan Keluarga</strong><br><span style="font-size: 0.85em; color: var(--text-muted);">Keseruan di siang hari dalam canda tawa dan hidangan lezat.</span></div>
             </div>
         </div>
 
@@ -530,54 +117,25 @@
             <h3 class="section-title" style="margin-bottom: 15px;">Buku Tamu Keluarga</h3>
             <div class="form-guestbook">
                 <input type="text" id="input-nama" placeholder="Nama Anda" required>
-                <textarea id="input-pesan" rows="3" placeholder="Tulis ucapan atau pesan hangat Anda..." required></textarea>
+                <textarea id="input-pesan" rows="3" placeholder="Tulis ucapan..." required></textarea>
                 <button class="btn-kirim" onclick="kirimUcapan()">Kirim Ucapan</button>
             </div>
             <div class="daftar-ucapan" id="box-ucapan"></div>
         </div>
-
     </div>
 
     <script>
-        // --- SISTEM PINTAR DETEKSI WAKTU HP ---
-        const jam = new Date().getHours();
-        let ucapan = "Selamat Datang";
-        if (jam >= 4 && jam < 11) ucapan = "Selamat Pagi";
-        else if (jam >= 11 && jam < 15) ucapan = "Selamat Siang";
-        else if (jam >= 15 && jam < 18) ucapan = "Selamat Sore";
-        else ucapan = "Selamat Malam";
+        const jam = new Date().getHours(); let ucapan = "Selamat Datang";
+        if (jam >= 4 && jam < 11) ucapan = "Selamat Pagi"; else if (jam >= 11 && jam < 15) ucapan = "Selamat Siang"; else if (jam >= 15 && jam < 18) ucapan = "Selamat Sore"; else ucapan = "Selamat Malam";
         document.getElementById('greetingText').innerHTML = `${ucapan}, Selamat Datang!`;
-
-        // --- SISTEM ANIMASI SCROLL ---
-        const penjelajahElemen = new IntersectionObserver((daftarElemen) => {
-            daftarElemen.forEach((elemen) => {
-                if (elemen.isIntersecting) elemen.target.classList.add('active');
-            });
-        }, { threshold: 0.15 });
+        const penjelajahElemen = new IntersectionObserver((daftarElemen) => { daftarElemen.forEach((elemen) => { if (elemen.isIntersecting) elemen.target.classList.add('active'); }); }, { threshold: 0.15 });
         document.querySelectorAll('.scroll-reveal').forEach((el) => penjelajahElemen.observe(el));
-
-        // --- CAROUSEL TOUCH SLIDER ---
-        const slider = document.getElementById('slider');
-        const items = document.querySelectorAll('.item-galeri');
-        const dotsContainer = document.getElementById('dots-container');
+        const slider = document.getElementById('slider'); const items = document.querySelectorAll('.item-galeri'); const dotsContainer = document.getElementById('dots-container');
         let isDragging = false, startX = 0, currentTranslate = 0, prevTranslate = 0, animationID = 0, currentIndex = 0;
-
-        items.forEach((_, i) => {
-            const dot = document.createElement('div');
-            dot.classList.add('dot');
-            if (i === 0) dot.classList.add('active');
-            dotsContainer.appendChild(dot);
-        });
+        items.forEach((_, i) => { const dot = document.createElement('div'); dot.classList.add('dot'); if (i === 0) dot.classList.add('active'); dotsContainer.appendChild(dot); });
         const dots = document.querySelectorAll('.dot');
-
-        slider.addEventListener('touchstart', touchStart(currentIndex));
-        slider.addEventListener('touchend', touchEnd);
-        slider.addEventListener('touchmove', touchMove);
-        slider.addEventListener('mousedown', touchStart(currentIndex));
-        slider.addEventListener('mouseup', touchEnd);
-        slider.addEventListener('mouseleave', touchEnd);
-        slider.addEventListener('mousemove', touchMove);
-
+        slider.addEventListener('touchstart', touchStart(currentIndex)); slider.addEventListener('touchend', touchEnd); slider.addEventListener('touchmove', touchMove);
+        slider.addEventListener('mousedown', touchStart(currentIndex)); slider.addEventListener('mouseup', touchEnd); slider.addEventListener('mouseleave', touchEnd); slider.addEventListener('mousemove', touchMove);
         function touchStart(index) { return function (event) { isDragging = true; startX = getPositionX(event); animationID = requestAnimationFrame(animation); } }
         function touchMove(event) { if (isDragging) { const currentX = getPositionX(event); currentTranslate = prevTranslate + currentX - startX; } }
         function touchEnd() { isDragging = false; cancelAnimationFrame(animationID); const movedBy = currentTranslate - prevTranslate; if (movedBy < -50 && currentIndex < items.length - 1) currentIndex++; if (movedBy > 50 && currentIndex > 0) currentIndex--; setPositionByIndex(); }
@@ -586,90 +144,18 @@
         function setSliderPosition() { slider.style.transform = `translateX(${currentTranslate}px)`; }
         function setPositionByIndex() { currentTranslate = currentIndex * -slider.offsetWidth; prevTranslate = currentTranslate; slider.style.transform = `translateX(${currentTranslate}px)`; dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex)); }
         window.addEventListener('resize', () => { setPositionByIndex(); });
-
-        // --- LOGIKA TOMBOL BACK TO TOP ---
-        const mybutton = document.getElementById("btn-back-to-top");
-        window.onscroll = function() { scrollFunction() };
+        const mybutton = document.getElementById("btn-back-to-top"); window.onscroll = function() { scrollFunction() };
         function scrollFunction() { if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) mybutton.style.display = "block"; else mybutton.style.display = "none"; }
         function keAtas() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-
-        // --- FITUR LIGHTBOX ---
         function bukaLightbox(srcGambar) { if (isDragging) return; const lightbox = document.getElementById('custom-lightbox'); const lightboxImg = document.getElementById('img-lightbox'); lightboxImg.src = srcGambar; lightbox.style.display = 'flex'; }
         function tutupLightbox() { document.getElementById('custom-lightbox').style.display = 'none'; }
-
-        // --- LOGIKA BUKU TAMU ---
-        const boxUcapan = document.getElementById('box-ucapan');
-        window.onload = function() { muatUcapan(); };
-
-        function kirimUcapan() {
-            const nama = document.getElementById('input-nama').value.trim();
-            const pesan = document.getElementById('input-pesan').value.trim();
-            if(nama === "" || pesan === "") { alert("Harap isi nama dan ucapan Anda!"); return; }
-
-            const skrg = new Date();
-            const hariDaftar = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-            const namaHari = hariDaftar[skrg.getDay()];
-            const tanggal = skrg.getDate().toString().padStart(2, '0');
-            const bulanDaftar = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
-            const namaBulan = bulanDaftar[skrg.getMonth()];
-            const tahun = skrg.getFullYear();
-            const jamMenit = skrg.getHours().toString().padStart(2, '0') + ":" + skrg.getMinutes().toString().padStart(2, '0');
-            const formatWaktu = `${namaHari}, ${tanggal} ${namaBulan} ${tahun} - ${jamMenit} WITA`;
-
-            const dataUcapan = { nama: nama, pesan: pesan, waktu: formatWaktu };
-            let daftarLama = JSON.parse(localStorage.getItem('ucapan_panakang')) || [];
-            daftarLama.unshift(dataUcapan);
-            localStorage.setItem('ucapan_panakang', JSON.stringify(daftarLama));
-
-            document.getElementById('input-nama').value = "";
-            document.getElementById('input-pesan').value = "";
-            muatUcapan();
-        }
-
-        function muatUcapan() {
-            let daftarLama = JSON.parse(localStorage.getItem('ucapan_panakang')) || [];
-            let htmlKonten = `
-                <div class="kotak-pesan">
-                    <span class="nama-pengirim">Sistem</span>
-                    <span class="waktu-kirim">Sistem Otomatis • Pendeteksi Aktif</span>
-                    <span class="isi-pesan">Selamat datang di website resmi THE PANAIKANG FAMILY! Silakan tinggalkan jejak Anda di sini.</span>
-                </div>
-            `;
-            daftarLama.forEach(item => {
-                const displayWaktu = item.waktu ? item.waktu : "Baru saja";
-                htmlKonten += `
-                    <div class="kotak-pesan">
-                        <span class="nama-pengirim">${escapeHTML(item.nama)}</span>
-                        <span class="waktu-kirim">Dikirim pada: ${escapeHTML(displayWaktu)}</span>
-                        <span class="isi-pesan">${escapeHTML(item.pesan)}</span>
-                    </div>
-                `;
-            });
-            boxUcapan.innerHTML = htmlKonten;
-        }
-
+        const boxUcapan = document.getElementById('box-ucapan'); window.onload = function() { muatUcapan(); };
+        function kirimUcapan() { const nama = document.getElementById('input-nama').value.trim(); const pesan = document.getElementById('input-pesan').value.trim(); if(nama === "" || pesan === "") { alert("Harap isi nama dan ucapan Anda!"); return; } const skrg = new Date(); const hariDaftar = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]; const namaHari = hariDaftar[skrg.getDay()]; const tanggal = skrg.getDate().toString().padStart(2, '0'); const bulanDaftar = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"]; const namaBulan = bulanDaftar[skrg.getMonth()]; const tahun = skrg.getFullYear(); const jamMenit = skrg.getHours().toString().padStart(2, '0') + ":" + skrg.getMinutes().toString().padStart(2, '0'); const formatWaktu = `${namaHari}, ${tanggal} ${namaBulan} ${tahun} - ${jamMenit} WITA`; const dataUcapan = { nama: nama, pesan: pesan, waktu: formatWaktu }; let daftarLama = JSON.parse(localStorage.getItem('ucapan_panakang')) || []; daftarLama.unshift(dataUcapan); localStorage.setItem('ucapan_panakang', JSON.stringify(daftarLama)); document.getElementById('input-nama').value = ""; document.getElementById('input-pesan').value = ""; muatUcapan(); }
+        function muatUcapan() { let daftarLama = JSON.parse(localStorage.getItem('ucapan_panakang')) || []; let htmlKonten = `<div class="kotak-pesan"><span class="nama-pengirim">Sistem</span><span class="waktu-kirim">Sistem Otomatis • Pendeteksi Aktif</span><span class="isi-pesan">Selamat datang di website resmi THE PANAIKANG FAMILY! Silakan tinggalkan jejak Anda di sini.</span></div>`; daftarLama.forEach(item => { const displayWaktu = item.waktu ? item.waktu : "Baru saja"; htmlKonten += `<div class="kotak-pesan"><span class="nama-pengirim">${escapeHTML(item.nama)}</span><span class="waktu-kirim">Dikirim pada: ${escapeHTML(displayWaktu)}</span><span class="isi-pesan">${escapeHTML(item.pesan)}</span></div>`; }); boxUcapan.innerHTML = htmlKonten; }
         function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)); }
-
-        // --- ANIMASI PARTIKEL ---
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        const particleCount = 40;
-
-        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Particle {
-            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 2 + 0.5; this.speedX = Math.random() * 0.4 - 0.2; this.speedY = Math.random() * 0.4 - 0.2; this.opacity = Math.random() * 0.4 + 0.1; }
-            update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width) this.speedX *= -1; if (this.y < 0 || this.y > canvas.height) this.speedY *= -1; }
-            draw() { const style = getComputedStyle(document.documentElement); const color = style.getPropertyValue('--particle-color').trim(); ctx.fillStyle = color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
-        }
-
-        function init() { for (let i = 0; i < particleCount; i++) { particles.push(new Particle()); } }
-        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
-        init(); animate();
+        const canvas = document.getElementById('particle-canvas'); const ctx = canvas.getContext('2d'); let particles = []; const particleCount = 40; function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; } window.addEventListener('resize', resizeCanvas); resizeCanvas();
+        class Particle { constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 2 + 0.5; this.speedX = Math.random() * 0.4 - 0.2; this.speedY = Math.random() * 0.4 - 0.2; this.opacity = Math.random() * 0.4 + 0.1; } update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width) this.speedX *= -1; if (this.y < 0 || this.y > canvas.height) this.speedY *= -1; } draw() { const style = getComputedStyle(document.documentElement); const color = style.getPropertyValue('--particle-color').trim(); ctx.fillStyle = color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); } }
+        function init() { for (let i = 0; i < particleCount; i++) { particles.push(new Particle()); } } function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); } init(); animate();
     </script>
-
 </body>
 </html>
