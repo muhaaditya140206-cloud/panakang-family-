@@ -32,7 +32,7 @@
                 --border-color: rgba(255, 255, 255, 0.08); 
                 --text-main: #f4f4f5; 
                 --text-muted: #a1a1aa; 
-                --accent-color: #e11d48; /* Sesuai gambar referensi guestbook */
+                --accent-color: #e11d48;
                 --accent-hover: #be123c;
                 --shadow-color: rgba(0, 0, 0, 0.5); 
                 --input-bg: rgba(255, 255, 255, 0.05); 
@@ -54,7 +54,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* FITUR 3: Splash Screen / Preloader */
         #preloader {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -105,15 +104,19 @@
             box-shadow: 0 15px 35px -10px var(--shadow-color); 
             width: 100%;
             box-sizing: border-box;
-            animation: munculed 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
-            transform: translateY(20px);
         }
-        .section-card:nth-child(1) { animation-delay: 0.1s; }
-        .section-card:nth-child(2) { animation-delay: 0.2s; }
-        .section-card:nth-child(3) { animation-delay: 0.3s; }
-        .section-card:nth-child(4) { animation-delay: 0.4s; }
-        .section-card:nth-child(5) { animation-delay: 0.5s; }
+        
+        /* FITUR 4: Animasi Reveal Scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px) scale(0.97);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: transform, opacity;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
 
         /* HERO SECTION */
         .hero-section { display: flex; flex-direction: column; align-items: center; text-align: center; }
@@ -144,9 +147,9 @@
             align-items: center;
             gap: 6px;
         }
-        .visitor-count { font-weight: 800; color: #f97316; } /* Warna orange sesuai referensi */
+        .visitor-count { font-weight: 800; color: #f97316; }
 
-        /* MUSIC & TOP BUTTONS */
+        /* TOP BUTTON */
         .floating-btn { 
             position: fixed; z-index: 99; border: 1px solid var(--border-color); outline: none; 
             background: var(--container-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
@@ -154,10 +157,8 @@
             transition: var(--transition-smooth); display: flex; align-items: center; justify-content: center; 
             width: 50px; height: 50px; font-size: 22px; 
         }
-        #music-control { bottom: 30px; left: 30px; }
         #btn-back-to-top { bottom: 30px; right: 30px; display: none; }
         .floating-btn:hover { transform: scale(1.1); }
-        #music-control.playing { animation: pulseGlow 2s infinite alternate; }
 
         /* TYPOGRAPHY & LISTS */
         .section-title { margin: 0 0 16px 0; font-size: 0.85em; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; text-align: left; }
@@ -205,7 +206,6 @@
         .btn-wa { display: flex; align-items: center; justify-content: center; background-color: var(--text-main); color: var(--bg-color); text-decoration: none; padding: 14px; border-radius: var(--radius-md); font-weight: 700; margin-top: 20px; font-size: 0.95em; width: 100%; box-sizing: border-box; }
         .btn-share { display: flex; align-items: center; justify-content: center; background-color: #25d366; color: white; text-decoration: none; padding: 14px; border-radius: var(--radius-md); font-weight: 700; margin-top: 10px; font-size: 0.95em; border: none; width: 100%; box-sizing: border-box; cursor: pointer; }
 
-        @keyframes munculed { to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes pulseGlow { 0% { transform: scale(0.95); opacity: 0.8; } 100% { transform: scale(1.05); opacity: 1; } }
@@ -233,18 +233,16 @@
         </svg>
     </button>
     
-    <button id="music-control" class="floating-btn" title="Putar/Jeda Musik">🎵</button>
-
-    <audio id="bg-music" loop>
+    <audio id="bg-music" loop autoplay>
         <source src="musik.mp3" type="audio/mpeg">
     </audio>
 
     <div class="container">
         
-        <div class="section-card hero-section">
+        <div class="section-card reveal active hero-section">
             <img src="logobaru.jpg" alt="THE PANAIKANG FAMILY" class="logo">
             
-            <div class="badge-greeting" id="greetingText">✨ Selamat Siang, Selamat datang kembali</div>
+            <div class="badge-greeting" id="greetingText">Memuat sapaan...</div>
             
             <div class="badge-view">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -255,7 +253,7 @@
             </div>
         </div>
 
-        <div class="section-card">
+        <div class="section-card reveal">
             <h3 class="section-title">Project Info</h3>
             <div class="info-item"><span class="info-label">Status Project</span><span class="info-value">Website Dokumentasi Resmi</span></div>
             <div class="info-item"><span class="info-label">Developer Web</span><span class="info-value">Aditya</span></div>
@@ -265,7 +263,7 @@
             <button class="btn-share" onclick="bagikanKeWA()">📢 Bagikan ke WA Keluarga</button>
         </div>
 
-        <div class="section-card">
+        <div class="section-card reveal">
             <h3 class="section-title" style="color: var(--accent-color);">Dokumentasi & Kegiatan</h3>
             <div class="slider-wrapper">
                 <div class="slider-container" id="slider">
@@ -278,7 +276,7 @@
             <div class="slider-dots" id="dots-container"></div>
         </div>
 
-        <div class="section-card">
+        <div class="section-card reveal">
             <h3 class="section-title" style="color: var(--accent-color);">Klip Video Dokumentasi</h3>
             <div class="video-wrapper">
                 <video controls preload="metadata" poster="logobaru.jpg"><source src="video1.mp4" type="video/mp4"></video>
@@ -290,7 +288,7 @@
             </div>
         </div>
 
-        <div class="section-card">
+        <div class="section-card reveal">
             <h3 class="section-title" style="color: #f97316;">Buku Tamu Keluarga</h3>
             <div class="form-guestbook">
                 <input type="text" id="input-nama" placeholder="Nama Anda" required>
@@ -303,13 +301,32 @@
     </div>
 
     <script>
-        // Logika Hilangkan Preloader saat halaman selesai dimuat
+        // Logika Preloader
         window.addEventListener('load', function() {
             const preloader = document.getElementById('preloader');
             setTimeout(() => {
                 preloader.style.opacity = '0';
                 preloader.style.visibility = 'hidden';
-            }, 800); // Tampil minimal 0.8 detik biar animasinya terlihat
+            }, 800); 
+        });
+
+        // Intersection Observer untuk animasi scroll (Reveal)
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        obs.unobserve(entry.target); // Animasi cukup sekali jalan saat di-scroll
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+
+            document.querySelectorAll('.reveal').forEach(el => {
+                // Jangan observe hero section karena dia sudah diset active dari awal
+                if (!el.classList.contains('hero-section')) {
+                    observer.observe(el);
+                }
+            });
         });
 
         const firebaseConfig = {
@@ -340,29 +357,39 @@
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(pesanUndangan)}`, '_blank');
         }
 
+        // LOGIKA AUTOPLAY MUSIK TERSEMBUNYI
         const lagu = document.getElementById('bg-music');
-        const tombolMusik = document.getElementById('music-control');
-        let musikSengajaDimatikan = false;
+        let musikSudahJalan = false;
 
-        document.addEventListener('click', () => {
-            if (lagu.paused && !musikSengajaDimatikan) {
-                lagu.play().then(() => tombolMusik.classList.add('playing')).catch(() => {});
+        function mainkanMusikOtomatis() {
+            if (!musikSudahJalan) {
+                lagu.play().then(() => {
+                    musikSudahJalan = true;
+                    // Hapus pendengar event jika sudah berhasil terputar
+                    document.removeEventListener('click', mainkanMusikOtomatis);
+                    document.removeEventListener('touchstart', mainkanMusikOtomatis);
+                    document.removeEventListener('scroll', mainkanMusikOtomatis);
+                }).catch(() => {
+                    // Browser masih memblokir (biasanya jika belum ada klik)
+                });
             }
-        }, { once: true });
+        }
 
-        tombolMusik.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (lagu.paused) {
-                lagu.play(); tombolMusik.classList.add('playing'); musikSengajaDimatikan = false;
-            } else {
-                lagu.pause(); tombolMusik.classList.remove('playing'); musikSengajaDimatikan = true;
-            }
+        // Jika autoplay awal diblokir, pasang pemicu saat user mulai berinteraksi dengan web
+        window.addEventListener('load', () => {
+            lagu.play().then(() => {
+                musikSudahJalan = true;
+            }).catch(() => {
+                document.addEventListener('click', mainkanMusikOtomatis);
+                document.addEventListener('touchstart', mainkanMusikOtomatis);
+                document.addEventListener('scroll', mainkanMusikOtomatis);
+            });
         });
 
-        // Logika sapaan waktu otomatis dengan Emoji
+        // Sapaan tanpa emoji & akhiran tanda seru
         const jam = new Date().getHours(); let ucapan = "Selamat Datang";
         if (jam >= 4 && jam < 11) ucapan = "Selamat Pagi"; else if (jam >= 11 && jam < 15) ucapan = "Selamat Siang"; else if (jam >= 15 && jam < 18) ucapan = "Selamat Sore"; else ucapan = "Selamat Malam";
-        document.getElementById('greetingText').innerHTML = `✨ ${ucapan}, Selamat datang kembali`;
+        document.getElementById('greetingText').innerHTML = `${ucapan}, Selamat datang kembali!`;
         
         const mybutton = document.getElementById("btn-back-to-top"); window.onscroll = function() { scrollFunction() };
         function scrollFunction() { if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) mybutton.style.display = "flex"; else mybutton.style.display = "none"; }
