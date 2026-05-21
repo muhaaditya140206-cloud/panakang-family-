@@ -106,7 +106,6 @@
             box-sizing: border-box;
         }
         
-        /* FITUR 4: Animasi Reveal Scroll */
         .reveal {
             opacity: 0;
             transform: translateY(40px) scale(0.97);
@@ -174,7 +173,7 @@
         .item-galeri img { width: 100%; height: 250px; object-fit: cover; display: block; pointer-events: none; }
         .caption-galeri { padding: 16px; font-size: 0.9em; color: var(--text-main); background: var(--container-bg); text-align: left; }
         
-        .slider-dots { display: flex; justify-content: center; gap: 6px; margin-top: 16px; }
+        .slider-dots { display: flex; justify-content: center; gap: 6px; margin-top: 16px; width: 100%; flex-wrap: wrap; }
         .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); opacity: 0.3; transition: var(--transition-smooth); }
         .dot.active { background: var(--accent-color); opacity: 1; transform: scale(1.3); }
         
@@ -271,6 +270,12 @@
                     <div class="item-galeri" onclick="bukaLightbox('konten2.jpg')"><img src="konten2.jpg" alt="Web 2"><div class="caption-galeri"><strong>Aktivitas & Acara</strong><br><span style="color: var(--text-muted);">Agenda seru dari THE PANAIKANG FAMILY.</span></div></div>
                     <div class="item-galeri" onclick="bukaLightbox('konten3.jpg')"><img src="konten3.jpg" alt="Web 3"><div class="caption-galeri"><strong>Keceriaan Bersama</strong><br><span style="color: var(--text-muted);">Tawa dan canda yang selalu menghiasi hari.</span></div></div>
                     <div class="item-galeri" onclick="bukaLightbox('konten4.jpg')"><img src="konten4.jpg" alt="Web 4"><div class="caption-galeri"><strong>Dokumentasi Spesial</strong><br><span style="color: var(--text-muted);">Catatan momen berharga keluarga.</span></div></div>
+                    <div class="item-galeri" onclick="bukaLightbox('konten5.jpg')"><img src="konten5.jpg" alt="Web 5"><div class="caption-galeri"><strong>Momen Hangat</strong><br><span style="color: var(--text-muted);">Kebersamaan yang erat dan penuh kasih.</span></div></div>
+                    <div class="item-galeri" onclick="bukaLightbox('konten6.jpg')"><img src="konten6.jpg" alt="Web 6"><div class="caption-galeri"><strong>Kilas Balik Kegiatan</strong><br><span style="color: var(--text-muted);">Arsip cerita perjalanan keluarga tercinta.</span></div></div>
+                    <div class="item-galeri" onclick="bukaLightbox('konten7.jpg')"><img src="konten7.jpg" alt="Web 7"><div class="caption-galeri"><strong>Kebahagiaan Utuh</strong><br><span style="color: var(--text-muted);">Senyuman tulus di setiap pertemuan.</span></div></div>
+                    <div class="item-galeri" onclick="bukaLightbox('konten8.jpg')"><img src="konten8.jpg" alt="Web 8"><div class="caption-galeri"><strong>Cerita Hari Ini</strong><br><span style="color: var(--text-muted);">Mengabadikan setiap detik memori indah.</span></div></div>
+                    <div class="item-galeri" onclick="bukaLightbox('konten9.jpg')"><img src="konten9.jpg" alt="Web 9"><div class="caption-galeri"><strong>Saling Berbagi</strong><br><span style="color: var(--text-muted);">Nilai kebersamaan yang terus dijaga.</span></div></div>
+                    <div class="item-galeri" onclick="bukaLightbox('konten10.jpg')"><img src="konten10.jpg" alt="Web 10"><div class="caption-galeri"><strong>Harmoni Keluarga</strong><br><span style="color: var(--text-muted);">THE PANAIKANG FAMILY yang selalu kompak.</span></div></div>
                 </div>
             </div>
             <div class="slider-dots" id="dots-container"></div>
@@ -316,13 +321,12 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
-                        obs.unobserve(entry.target); // Animasi cukup sekali jalan saat di-scroll
+                        obs.unobserve(entry.target);
                     }
                 });
             }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
 
             document.querySelectorAll('.reveal').forEach(el => {
-                // Jangan observe hero section karena dia sudah diset active dari awal
                 if (!el.classList.contains('hero-section')) {
                     observer.observe(el);
                 }
@@ -365,17 +369,13 @@
             if (!musikSudahJalan) {
                 lagu.play().then(() => {
                     musikSudahJalan = true;
-                    // Hapus pendengar event jika sudah berhasil terputar
                     document.removeEventListener('click', mainkanMusikOtomatis);
                     document.removeEventListener('touchstart', mainkanMusikOtomatis);
                     document.removeEventListener('scroll', mainkanMusikOtomatis);
-                }).catch(() => {
-                    // Browser masih memblokir (biasanya jika belum ada klik)
-                });
+                }).catch(() => {});
             }
         }
 
-        // Jika autoplay awal diblokir, pasang pemicu saat user mulai berinteraksi dengan web
         window.addEventListener('load', () => {
             lagu.play().then(() => {
                 musikSudahJalan = true;
@@ -386,7 +386,7 @@
             });
         });
 
-        // Sapaan tanpa emoji & akhiran tanda seru
+        // Sapaan baru tanpa emoji dengan akhiran tanda seru (!)
         const jam = new Date().getHours(); let ucapan = "Selamat Datang";
         if (jam >= 4 && jam < 11) ucapan = "Selamat Pagi"; else if (jam >= 11 && jam < 15) ucapan = "Selamat Siang"; else if (jam >= 15 && jam < 18) ucapan = "Selamat Sore"; else ucapan = "Selamat Malam";
         document.getElementById('greetingText').innerHTML = `${ucapan}, Selamat datang kembali!`;
