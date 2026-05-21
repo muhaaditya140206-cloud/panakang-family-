@@ -197,11 +197,21 @@
         .daftar-ucapan { margin-top: 24px; max-height: 350px; overflow-y: auto; }
         .daftar-ucapan::-webkit-scrollbar { width: 0px; }
         
-        .kotak-pesan { background: var(--input-bg); border-radius: var(--radius-md); padding: 16px; margin-bottom: 12px; text-align: left; border-left: 3px solid transparent; }
+        /* KOTAK PESAN & SISTEM LIKE PROFESIONAL */
+        .kotak-pesan { background: var(--input-bg); border-radius: var(--radius-md); padding: 16px; margin-bottom: 12px; text-align: left; border-left: 3px solid transparent; display: flex; flex-direction: column; position: relative; }
         .nama-pengirim { font-weight: 700; color: var(--text-main); font-size: 0.95em; margin-bottom: 4px; display: block; }
         .waktu-kirim { font-size: 0.75em; color: var(--text-muted); display: block; margin-bottom: 8px; }
         .isi-pesan { font-size: 0.9em; color: var(--text-main); line-height: 1.5; }
         
+        .kotak-pesan-footer { display: flex; justify-content: flex-end; align-items: center; margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(15, 23, 42, 0.05); }
+        @media (prefers-color-scheme: dark) { .kotak-pesan-footer { border-top-color: rgba(255, 255, 255, 0.05); } }
+        
+        .btn-like { background: transparent; border: none; color: var(--text-muted); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 0.85em; font-weight: 600; padding: 4px 8px; border-radius: 20px; transition: var(--transition-smooth); }
+        .btn-like:hover { background: rgba(225, 29, 72, 0.08); color: #e11d48; }
+        .btn-like.liked { color: #e11d48; }
+        .btn-like svg { transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .btn-like:active svg { transform: scale(1.4); }
+
         .btn-wa { display: flex; align-items: center; justify-content: center; background-color: var(--text-main); color: var(--bg-color); text-decoration: none; padding: 14px; border-radius: var(--radius-md); font-weight: 700; margin-top: 20px; font-size: 0.95em; width: 100%; box-sizing: border-box; }
         .btn-share { display: flex; align-items: center; justify-content: center; background-color: #25d366; color: white; text-decoration: none; padding: 14px; border-radius: var(--radius-md); font-weight: 700; margin-top: 10px; font-size: 0.95em; border: none; width: 100%; box-sizing: border-box; cursor: pointer; }
 
@@ -315,7 +325,7 @@
             }, 800); 
         });
 
-        // Intersection Observer untuk animasi scroll (Reveal)
+        // Intersection Observer (Reveal Scroll)
         document.addEventListener("DOMContentLoaded", () => {
             const observer = new IntersectionObserver((entries, obs) => {
                 entries.forEach(entry => {
@@ -333,6 +343,7 @@
             });
         });
 
+        // Firebase Initialization
         const firebaseConfig = {
             apiKey: "AIzaSyCwsNooDMdI7v_ffz_UVPVUtBDXcC2LfU",
             authDomain: "web-panakang.firebaseapp.com",
@@ -386,7 +397,7 @@
             });
         });
 
-        // Sapaan baru tanpa emoji dengan akhiran tanda seru (!)
+        // Sapaan Baru tanpa emoji dengan akhiran tanda seru (!)
         const jam = new Date().getHours(); let ucapan = "Selamat Datang";
         if (jam >= 4 && jam < 11) ucapan = "Selamat Pagi"; else if (jam >= 11 && jam < 15) ucapan = "Selamat Siang"; else if (jam >= 15 && jam < 18) ucapan = "Selamat Sore"; else ucapan = "Selamat Malam";
         document.getElementById('greetingText').innerHTML = `${ucapan}, Selamat datang kembali!`;
@@ -424,18 +435,68 @@
             const bulanDaftar = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"]; 
             const formatWaktu = `${hariDaftar[skrg.getDay()]}, ${skrg.getDate().toString().padStart(2, '0')} ${bulanDaftar[skrg.getMonth()]} ${skrg.getFullYear()} - ${skrg.getHours().toString().padStart(2, '0')}:${skrg.getMinutes().toString().padStart(2, '0')} WITA`; 
             
-            ucapanRef.push({ nama: nama, pesan: pesan, waktu: formatWaktu, timestamp: firebase.database.ServerValue.TIMESTAMP }).then(() => {
+            ucapanRef.push({ nama: nama, pesan: pesan, waktu: formatWaktu, likes: 0, timestamp: firebase.database.ServerValue.TIMESTAMP }).then(() => {
                 document.getElementById('input-nama').value = ""; document.getElementById('input-pesan').value = ""; btn.disabled = false; btn.innerText = "Kirim Ucapan";
             }).catch((error) => { alert("Gagal mengirim: " + error.message); btn.disabled = false; btn.innerText = "Kirim Ucapan"; });
         }
         
+        // SISTEM FIREDATA REALTIME & FUNGSI TOGGLE LIKE PROFESIONAL
+        function toggleLike(keyId) {
+            let likedUcapan = JSON.parse(localStorage.getItem('liked_ucapan') || '[]');
+            const index = likedUcapan.indexOf(keyId);
+            letisLiking = false;
+
+            if (index === -1) {
+                likedUcapan.push(keyId);
+                isLiking = true;
+            } else {
+                likedUcapan.splice(index, 1);
+                isLiking = false;
+            }
+            localStorage.setItem('liked_ucapan', JSON.stringify(likedUcapan));
+
+            database.ref('buku_tamu/' + keyId + '/likes').transaction((currentLikes) => {
+                if (isLiking) {
+                    return (currentLikes || 0) + 1;
+                } else {
+                    return Math.max(0, (currentLikes || 0) - 1);
+                }
+            });
+        }
+
         const boxUcapan = document.getElementById('box-ucapan');
         ucapanRef.orderByChild('timestamp').on('value', (snapshot) => {
             let htmlKonten = `<div class="kotak-pesan" style="border-left-color: var(--accent-color);"><span class="nama-pengirim">Sistem Cloud</span><span class="waktu-kirim">Server Firebase Resmi</span><span class="isi-pesan">Selamat datang di website resmi THE PANAIKANG FAMILY!</span></div>`;
             let dataArray = [];
-            snapshot.forEach((child) => { dataArray.push(child.val()); });
+            
+            snapshot.forEach((child) => { 
+                let item = child.val();
+                item.key = child.key;
+                dataArray.push(item); 
+            });
+
+            let likedUcapan = JSON.parse(localStorage.getItem('liked_ucapan') || '[]');
+            
             dataArray.reverse().forEach(item => { 
-                htmlKonten += `<div class="kotak-pesan"><span class="nama-pengirim">${escapeHTML(item.nama)}</span><span class="waktu-kirim">${escapeHTML(item.waktu || "Baru saja")}</span><span class="isi-pesan">${escapeHTML(item.pesan)}</span></div>`; 
+                const totalLikes = item.likes || 0;
+                const isLiked = likedUcapan.includes(item.key) ? 'liked' : '';
+                const fillSvg = likedUcapan.includes(item.key) ? '#e11d48' : 'none';
+                const strokeSvg = likedUcapan.includes(item.key) ? '#e11d48' : 'currentColor';
+
+                htmlKonten += `
+                    <div class="kotak-pesan">
+                        <span class="nama-pengirim">${escapeHTML(item.nama)}</span>
+                        <span class="waktu-kirim">${escapeHTML(item.waktu || "Baru saja")}</span>
+                        <span class="isi-pesan">${escapeHTML(item.pesan)}</span>
+                        <div class="kotak-pesan-footer">
+                            <button class="btn-like ${isLiked}" onclick="toggleLike('${item.key}')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="${fillSvg}" stroke="${strokeSvg}" stroke-width="2.5">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                                <span>${totalLikes}</span>
+                            </button>
+                        </div>
+                    </div>`; 
             });
             boxUcapan.innerHTML = htmlKonten;
         });
